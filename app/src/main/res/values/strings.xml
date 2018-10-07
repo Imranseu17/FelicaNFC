@@ -1,0 +1,159 @@
+<resources>
+    <string name="app_name">NFCAPP</string>
+    <string name="welcome_eng">Welcome to Kaicom Soulations Limted</string>
+    <string name="username_eng">UserName</string>
+    <string name="password_eng">Password</string>
+    <string name="language_change_eng">Language Change Page</string>
+    <string name="select_eng">Select language</string>
+    <string name="spinner_bangla_eng">Bangla</string>
+    <string name="spinner_english_eng">English</string>
+    <string name="spinner_japan_eng">Japanese</string>
+    <string name="login_eng">Login</string>
+    <string name="nfccheck_eng">Hold a tag against the back of your device</string>
+    <string name="menu_eng">Menu</string>
+    <string name="readcard_eng">Card Read</string>
+    <string name="accountserch_eng">Account Search</string>
+    <string name="report_eng">Reports</string>
+    <string name="language_eng">Language Settings</string>
+    <string name="card_eng">Inspect Card</string>
+    <string name="settings_eng">Settings</string>
+    <string name="logout_eng">Logout</string>
+    <string name="operator_eng">Operator Settings</string>
+    <string name="api_eng">API Set Up</string>
+    <string name="device_eng">Device/Printer Settings</string>
+    <string name="company_eng">Company Settings</string>
+    <string name="other_eng">Other</string>
+    <string name="pos_eng">Pos Sales By Time</string>
+    <string name="gas_eng">Gas Sales By Time</string>
+    <string name="cName_eng">Customer Name</string>
+    <string name="cID_eng">Customer ID</string>
+    <string name="cACNO_eng">Customer Ac NO</string>
+    <string name="ccNO_eng">Customer C NO</string>
+    <string name="search_eng">Search</string>
+    <string name="cardproperties_eng">Card Properties</string>
+    <string name="cardHistory_eng">Card History</string>
+    <string name="carderrorHistory_eng">Error History</string>
+    <string name="textcustomer_eng">Customer Details</string>
+    <string name="textcustomerACID_eng">Ac ID: </string>
+    <string name="textcustomerACNO_eng">Ac NO: </string>
+    <string name="textcustomerinfo_eng">Customer Info</string>
+    <string name="transection_eng">Transaction</string>
+    <string name="subscription_eng">Subscription</string>
+    <string name="cardinfo_eng">Card</string>
+    <string name="meterinfo_eng">Meter</string>
+    <string name="language_change_ban">ভাষা পরিবর্তন পৃষ্ঠা</string>
+    <string name="select_ban">ভাষা নির্বাচন কর</string>
+    <string name="spinner_bangla_ban">বাংলা</string>
+    <string name="spinner_english_ban">ইংরেজি</string>
+    <string name="spinner_japan_ban">জাপানি</string>
+    <string name="welcome_ban">ককাইকাম সল্যাশনস লিমেটে স্বাগতম</string>
+    <string name="username_ban">ব্যবহারকারীর নাম</string>
+    <string name="password_ban">পাসওয়ার্ড</string>
+    <string name="login_ban">লগইন</string>
+    <string name="nfccheck_ban">আপনার ডিভাইসের পিছনে একটি ট্যাগ ধরে রাখুন</string>
+    <string name="menu_ban">মেনু</string>
+    <string name="readcard_ban">কার্ড পড়ুন</string>
+    <string name="accountserch_ban">অ্যাকাউন্ট অনুসন্ধান</string>
+    <string name="servicecharge_eng">Service Charge</string>
+    <string name="servicecharge_ban">সেবা খরচ</string>
+    <string name="servicecharge_japanese">サービス料</string>
+    <string name="report_ban">রিপোর্ট</string>
+    <string name="language_ban">ভাষা সেটিংস</string>
+    <string name="card_ban">কার্ড পরিদর্শন</string>
+    <string name="settings_ban">সেটিংস</string>
+    <string name="logout_ban">প্রস্থান</string>
+    <string name="operator_ban">অপারেটর সেটিংস</string>
+    <string name="api_ban">API সেট আপ</string>
+    <string name="device_ban">ডিভাইস / প্রিন্টার সেটিংস</string>
+    <string name="company_ban">কোম্পানি সেটিংস</string>
+    <string name="other_ban">অন্যান্য</string>
+    <string name="pos_ban">সময় বিক্রয় বিক্রয়ের বিক্রয় পয়েন্ট</string>
+    <string name="gas_ban">সময় গ্যাস বিক্রয়</string>
+    <string name="cName_ban">ক্রেতার নাম</string>
+    <string name="cID_ban">গ্রাহক আইডি</string>
+    <string name="cACNO_ban">গ্রাহক অ্যাকাউন্ট নম্বর</string>
+    <string name="ccNO_ban">গ্রাহক কার্ড নম্বর</string>
+    <string name="search_ban">অনুসন্ধান</string>
+    <string name="cardproperties_ban">কার্ড বৈশিষ্ট্যাবলী</string>
+    <string name="cardHistory_ban">কার্ড ইতিহাস</string>
+    <string name="carderrorHistory_ban">ত্রুটি ইতিহাস</string>
+    <string name="textcustomer_ban">কাস্টমার বিস্তারিত</string>
+    <string name="textcustomerACID_ban">অ্যাকাউন্ট আইডি: </string>
+    <string name="textcustomerACNO_ban">হিসাব নাম্বার: </string>
+    <string name="textcustomerinfo_ban">গ্রাহক তথ্য</string>
+    <string name="transection_ban">লেনদেন</string>
+    <string name="subscription_ban">চাঁদা</string>
+    <string name="cardinfo_ban">কার্ড</string>
+    <string name="meterinfo_ban">মিটার</string>
+    <string name="language_change_japan">言語変更ページ</string>
+    <string name="select_japan">言語を選択する</string>
+    <string name="spinner_bangla_japan">バングラ</string>
+    <string name="spinner_english_japan">英語</string>
+    <string name="spinner_japan_japan">日本語</string>
+    <string name="welcome_japan">Kaicom Soulations Limted へようこそ</string>
+    <string name="username_japan">ユーザー名</string>
+    <string name="password_japan">パスワード</string>
+    <string name="login_japan">ログイン</string>
+    <string name="nfccheck_japan">デバイスの裏側にタグを置く</string>
+    <string name="menu_japan">メニュー</string>
+    <string name="readcard_japan">カードを読む</string>
+    <string name="accountserch_japan">アカウント検索</string>
+    <string name="report_japan">レポート</string>
+    <string name="language_japan">言語</string>
+    <string name="card_japan">カードを検査する</string>
+    <string name="settings_japan">設定</string>
+    <string name="logout_japan">ログアウト</string>
+    <string name="operator_japan">オペレーター設定</string>
+    <string name="api_japan">APIの設定</string>
+    <string name="device_japan">デバイス/プリンタの設定</string>
+    <string name="company_japan">会社の設定</string>
+    <string name="other_japan">その他</string>
+    <string name="pos_japan">販売時点管理の販売時間</string>
+    <string name="gas_japan">時間別ガス販売</string>
+    <string name="cName_japan">顧客名</string>
+    <string name="cID_japan">顧客ID</string>
+    <string name="cACNO_japan">顧客アカウント番号</string>
+    <string name="ccNO_japan">顧客カード番号</string>
+    <string name="search_japan">サーチ</string>
+    <string name="cardproperties_japan">カードのプロパティ</string>
+    <string name="cardHistory_japan">カード履歴</string>
+    <string name="carderrorHistory_japan">エラー履歴</string>
+    <string name="textcustomer_japan">お客様情報</string>
+    <string name="textcustomerACID_japan">アカウントID: </string>
+    <string name="textcustomerACNO_japan">アカウントなし: </string>
+    <string name="textcustomerinfo_japan">顧客情報</string>
+    <string name="transection_japan">トランザクション</string>
+    <string name="subscription_japan">購読</string>
+    <string name="cardinfo_japan">カード</string>
+    <string name="meterinfo_japan">メーター</string>
+    <string name="title_activity_menu_page">Dashboard</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="gridView">Grid View</string>
+    <string name="listView">List View</string>
+    <string name="title_activity_list_menu_page">Dashboard</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_recycle_view">Dashboard</string>
+    <string name="wordcount_hint"><font size="13"></font>Word Count of Customer ID</string>
+    <string name="company_hint"><font size="13"></font>Company Name for receipt/email</string>
+    <string name="automethod"><font size="13"></font>Auto Method</string>
+    <string name="maliaddress"><font size="13"></font>Mail Address</string>
+    <string name="username"><font size="13"></font>Username</string>
+    <string name="password"><font size="13"></font>Password</string>
+    <string name="timeout"><font size="13"></font>Timeout</string>
+    <string name="domain1"><font size="13"></font>Domain:1</string>
+    <string name="domain2"><font size="13"></font>Domain:2</string>
+    <string name="domain3"><font size="13"></font>Domain:3</string>
+    <string name="apikey"><font size="13"></font>ApiKey</string>
+    <string name="poskey"><font size="13"></font>PosKey</string>
+    <string name="operatorname"><font size="13"></font>Operator Name</string>
+    <string name="customersupport"><font size="13"></font>Customer Support</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

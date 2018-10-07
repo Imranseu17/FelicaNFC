@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OthersFragment">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <Switch
+        android:id="@+id/outputlog"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_height="wrap_content"
+        android:textSize="13dp"
+        android:text="Output Log                                                                                      "/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/outputlog"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/leavezero"
+            android:textSize="16dp"
+            android:text="Leave Zero at the beginning of the customer ID.
+ You can edit the number of words with the input form."/>
+
+    <Switch
+        android:id="@+id/leavezeroswitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/leavezero"/>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/leavezeroswitch"
+            android:id="@+id/wordcount">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:inputType="text"
+                android:hint="@string/wordcount_hint"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wordcount"
+            android:id="@+id/comapanyname">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:inputType="text"
+                android:hint="@string/company_hint"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comapanyname"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="230dp"
+            android:text="Save"
+            android:id="@+id/save"
+            android:textSize="14dp"
+            android:background="@drawable/roundedbutton"/>
+
+
+    </RelativeLayout>
+
+</FrameLayout>

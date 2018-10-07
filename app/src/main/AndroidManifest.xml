@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.root.officeapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+        </activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".NFCcheckActivity" />
+        <activity android:name=".LanguageActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".ReportActivity" />
+        <activity android:name=".AccountSearchActivity" />
+        <activity android:name=".InspectCardActivity" />
+        <activity android:name=".CardPropertiesActivity" />
+        <activity android:name=".ReadCard" />
+        <activity android:name=".CardDetailsActivity" />
+        <activity android:name=".CardHistoryActivity" />
+        <activity android:name=".ErrorHistoryActivity" />
+        <activity android:name=".CustomerInfoActivity" />
+        <activity android:name=".PosActivity" />
+        <activity android:name=".GasActivity" />
+        <activity android:name=".OperatorSettingsActivity" />
+        <activity android:name=".APISetUPActivity" />
+        <activity android:name=".DeviceActivity" />
+        <activity android:name=".CompanyActivity" />
+        <activity android:name=".OtherActivity" />
+        <activity
+            android:name=".GridMenuPageActivity"
+            android:label="@string/title_activity_menu_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ListMenuPageActivity"
+            android:label="@string/title_activity_list_menu_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ServiceChargeActivity" />
+        <activity
+            android:name=".RecycleViewActivity"
+            android:label="@string/title_activity_recycle_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+    </application>
+
+</manifest>

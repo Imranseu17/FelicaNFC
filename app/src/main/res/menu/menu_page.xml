@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/gridView"
+        android:orderInCategory="100"
+        android:title="@string/gridView"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/listView"
+        android:orderInCategory="100"
+        android:title="@string/listView"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/recycleView"
+        android:orderInCategory="100"
+        android:title="Recycle View"
+        app:showAsAction="never" />
+</menu>

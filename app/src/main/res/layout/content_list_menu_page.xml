@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:background="#fcfcfc"
+        tools:context = ".ListMenuPageActivity"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:fillViewport="true">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+
+                <Button
+                    android:id="@+id/btn_read"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@string/readcard_eng"
+                    android:background="@drawable/roundedbutton"
+                    android:textColor="@android:color/black"
+                    android:textSize="14dp"
+                    android:textStyle="bold"/>
+
+
+                <Button
+                    android:id="@+id/btn_account"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_below="@+id/btn_read"
+                    android:layout_height="40dp"
+                    android:text="@string/accountserch_eng"
+                    android:textSize="14dp"
+                    android:background="@drawable/roundedbutton"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/btn_service"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/btn_account"
+                    android:layout_height="40dp"
+                    android:text="@string/servicecharge_eng"
+                    android:textSize="14dp"
+                    android:background="@drawable/roundedbutton"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/btn_card"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/btn_service"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@string/card_eng"
+                    android:textSize="14dp"
+                    android:background="@drawable/roundedbutton"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold">
+
+                </Button>
+
+
+                <Button
+                    android:id="@+id/btn_report"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_below="@+id/btn_settings"
+                    android:layout_height="40dp"
+                    android:text="@string/report_eng"
+                    android:textSize="14dp"
+                    android:background="@drawable/roundedbutton"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/btn_settings"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/btn_card"
+                    android:gravity="center"
+                    android:layout_height="40dp"
+                    android:text="@string/settings_eng"
+                    android:textSize="14dp"
+                    android:background="@drawable/roundedbutton"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold">
+
+                </Button>
+
+
+
+
+                <Button
+                    android:id="@+id/btn_logout"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/btn_language"
+                    android:layout_height="40dp"
+                    android:text="@string/logout_eng"
+                    android:textSize="14dp"
+                    android:background="@drawable/roundedbutton"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold">
+
+                </Button>
+
+
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+
+
+    </LinearLayout>
+</ScrollView>

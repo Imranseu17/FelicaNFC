@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WebApiFragment">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/domain1">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:inputType="text"
+                android:hint="@string/domain1"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/domain2"
+            android:layout_below="@id/domain1" >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:textSize="13dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/domain2"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/domain3"
+            android:layout_below="@id/domain2" >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:textSize="13dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/domain3"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/apikey"
+            android:layout_below="@id/domain3">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:textSize="13dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/apikey"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/poskey"
+            android:layout_below="@id/apikey">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:textSize="13dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/poskey"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/poskey"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="100dp"
+            android:text="Save"
+            android:id="@+id/save"
+            android:textSize="14dp"
+            android:background="@drawable/roundedbutton"/>
+
+    </RelativeLayout>
+
+</FrameLayout>
