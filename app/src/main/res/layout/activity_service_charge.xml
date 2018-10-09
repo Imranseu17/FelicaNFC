@@ -19,7 +19,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/operator">
+        android:id="@+id/serviceCharge">
 
         <EditText
             android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:textSize="13dp"
             android:inputType="text"
             android:gravity="right"
-            android:id="@+id/serviceCharge"
+
             android:text="0.0 %"
             />
     </android.support.design.widget.TextInputLayout>
@@ -64,6 +64,10 @@
         android:layout_marginTop="100dp"
         android:id="@+id/chargeSelect"
         android:layout_marginLeft="10dp" />
+
+
+
+
 
 
     <Button

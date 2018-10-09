@@ -64,7 +64,7 @@
         android:text="@string/login_eng"
         android:id="@+id/login"
         android:textSize="30dp"
-        android:background="#82FC96"/>
+        android:background="@drawable/roundedbutton"/>
 
 </RelativeLayout>
 </ScrollView>

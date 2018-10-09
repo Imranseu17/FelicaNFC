@@ -2,8 +2,10 @@ package com.example.root.officeapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +25,7 @@ public class ServiceChargeActivity extends AppCompatActivity {
     Spinner spinner;
     TextView chargeSelect,chargeText,chargeSelectText;
     Button save;
+    TextInputLayout serviceCharge;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -35,16 +38,22 @@ public class ServiceChargeActivity extends AppCompatActivity {
         chargeSelectText = findViewById(R.id.chargeSelectText);
         spinner = findViewById(R.id.spinner);
         save = findViewById(R.id.save);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
-         String text =  sharedPreferences.getString("key","");
-         chargeSelect.setText(text);
-
-
-        final List<String> list = new ArrayList<>();
-
+        serviceCharge = findViewById(R.id.serviceCharge);
         Calendar calendar = Calendar.getInstance();
         final String currentDate = DateFormat.getDateTimeInstance().format(calendar.getTime());
+        final List<String> list = new ArrayList<>();
+
+        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedpreferences.edit();
+         String slot = sharedpreferences.getString("key","");
+         String parcentege = sharedpreferences.getString("parcentege","");
+
+
+               chargeSelect.setText(slot+parcentege);
+
+
+
+
 
         list.add("Select Charge");
         list.add("100 - 400 = 5");
@@ -74,6 +83,8 @@ public class ServiceChargeActivity extends AppCompatActivity {
                     case 4:
                         chargeSelect.setText(currentDate + " " + list.get(4) + " charge is applicable ");
                         break;
+
+
                 }
             }
 
@@ -109,11 +120,12 @@ public class ServiceChargeActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedpreferences.edit();
+
                 editor.putString("key",chargeSelect.getText().toString().trim());
+                editor.putString("parcentege",serviceCharge.getEditText().getText().toString().trim());
                 editor.apply();
                 editor.commit();
+
 
             }
         });

@@ -14,7 +14,7 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/nfc"
+            android:src="@drawable/nfcblack"
             android:layout_centerHorizontal="true"/>
 
         <TextView
