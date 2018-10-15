@@ -47,11 +47,8 @@ public class ServiceChargeActivity extends AppCompatActivity {
          String slot = sharedpreferences.getString("key","");
          String parcentege = sharedpreferences.getString("parcentege","");
 
-
-               chargeSelect.setText(slot+parcentege);
-
-
-
+               //chargeSelect.setText(slot+ "  " + "and  "+parcentege + "  is applicable");
+                chargeSelect.setText(slot);
 
 
         list.add("Select Charge");
@@ -119,6 +116,8 @@ public class ServiceChargeActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
 
                 editor.putString("key",chargeSelect.getText().toString().trim());
                 editor.putString("parcentege",serviceCharge.getEditText().getText().toString().trim());
