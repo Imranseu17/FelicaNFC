@@ -18,6 +18,7 @@ import com.example.root.officeapp.felica.lib.FeliCaLib;
 import com.example.root.officeapp.felicatag.FelicaTag;
 import com.example.root.officeapp.felicatag.NfcException;
 import com.example.root.officeapp.golobal.MainApplication;
+import com.example.root.officeapp.nfcfelica.FelicaAccess;
 
 
 public class ReadCard extends AppCompatActivity {
@@ -113,6 +114,17 @@ public class ReadCard extends AppCompatActivity {
                 new FeliCaLib.MemoryConfigurationBlock(tag.getId());
 
 
+        FelicaAccess felicaAccess = new FelicaAccess();
+
+        felicaAccess.readTag(tag);
+
+
+
+
+
+
+
+
 
 
 
@@ -131,6 +143,11 @@ public class ReadCard extends AppCompatActivity {
                     +"\n"+"System Code Bytes: "+systemCode.getBytes()+
                     "Block: "+block.getBytes()+
                     "\n"+"Memory Configuration: "+memoryConfigurationBlock.toString()
+                    +"\n"+"CustomerID : "+felicaAccess.getCustomerId()
+
+
+
+
                );
         } catch (NfcException e) {
             e.printStackTrace();
@@ -148,6 +165,10 @@ public class ReadCard extends AppCompatActivity {
         super.onPause();
         mAdapter.disableForegroundDispatch(this);
     }
+
+
+
+
 
 
 

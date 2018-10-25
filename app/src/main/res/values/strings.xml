@@ -151,9 +151,101 @@
     <string name="poskey"><font size="13"></font>PosKey</string>
     <string name="operatorname"><font size="13"></font>Operator Name</string>
     <string name="customersupport"><font size="13"></font>Customer Support</string>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="spinner_noselected">Select One</string>
+    <string name="required_alert_title">Warning</string>
+    <string name="CardRead_Alert_Title">Card Reader</string>
+    <string name="processing_failed_alert_title"/>
+    <string name="readcard_failed_alert_title"/>
+    <string name="receipt_alert_title">Receipt</string>
+    <string name="receipt_alert_msg">Do you reissue the receipt?</string>
+    <string name="receipt_RePrint_ConfirmTitle">Failed to print out.</string>
+    <string name="sendmail_alert_title">sendmail</string>
+    <string name="sendmail_alert_msg">Failed to send mail</string>
+    <string name="required_alert_allfield">Please ensure all fields are properly selected or filled in</string>
+    <string name="required_alert_button">OK</string>
+    <string name="required_alert_name">PLase fill out a name</string>
+    <string name="required_alert_price2">Please enter a valid price</string>
+    <string name="required_alert_price">Please enter a valid tariff price</string>
+    <string name="CardRead_Alert_Msg">Please place card on the reader</string>
+    <string name="processing_alert_Msg">Processing...\10Please wait for a while.</string>
+    <string name="processing_failed_alert_Msg">failedProcessing failed</string>
+    <string name="readcard_failed_alert_Msg">ReadCard failed</string>
+    <string name="processing_failed_alert_Button">OK</string>
+    <string name="readcard_failed_alert_Button">OK</string>
+    <string name="receipt_alert_button1">YES</string>
+    <string name="receipt_alert_button2">NO</string>
+    <string name="receipt_RePrint_ConfirmMsg">Please confirm settings. Do you want to try printing again?</string>
+    <string name="webapi_error_addTransaction">POSKey Invalid</string>
+    <string name="receipt_print_Support">Customer Support</string>
+    <string name="InspectCardErrorMessage2">Safety duration time over alarm</string>
+    <string name="InspectCardErrorMessage3">Safety duration time over</string>
+    <string name="InspectCardErrorMessage4">Recovery leakage confirmation alarm</string>
+    <string name="InspectCardErrorMessage5">Shutoff by seismic sensor</string>
+    <string name="InspectCardErrorMessage6">Shutoff due to Battery voltage drop</string>
+    <string name="InspectCardErrorMessage7">Manual shutoff by pressing switch B</string>
+    <string name="InspectCardErrorMessage8">Tampering prevention</string>
+    <string name="InspectCardErrorMessage9">Credit run out shutoff</string>
+    <string name="InspectCardErrorMessage10">Shutoff due to Sleep mode</string>
+    <string name="sendmail_alert_button1">retry</string>
+    <string name="sendmail_alert_button2">close</string>
+    <string name="processing_alert_title" />
+    <string name="cardreading_alert_title" />
+    <string name="CardWait_Alert_Title">Card Access</string>
+    <string name="cardreading_alert_Msg">Card Reading...</string>
+    <string name="processing_alert_MsgPrint">Print Processing...</string>
+    <string name="CardWait_Alert_Msg">Please Tap Card</string>
+    <string name="CardWait_Alert_Button">Cancel</string>
+    <string name="sendmail_header_Date">Date and Time:</string>
+    <string name="sendmail_header_Receipt">Transaction No:</string>
+    <string name="sendmail_header_Customer">Customer Name:</string>
+    <string name="sendmail_header_CustomerCode">Customer Code:</string>
+    <string name="sendmail_header_ID">Prepaid No:</string>
+    <string name="sendmail_header_Meter">Meter No:</string>
+    <string name="sendmail_header_Card">Card No:</string>
+    <string name="sendmail_header_Device">POS ID:</string>
+    <string name="sendmail_header_Operator">Operator Name:</string>
+    <string name="receipt_print_Date">Date and Time</string>
+    <string name="receipt_print_ReceiptID">Transaction No.</string>
+    <string name="receipt_print_Customer">Customer Name</string>
+    <string name="receipt_print_CustomerCode">Customer Code</string>
+    <string name="receipt_print_AccountID">Prepaid No</string>
+    <string name="receipt_print_Meter">Meter No</string>
+    <string name="receipt_print_Card">Card No</string>
+    <string name="receipt_print_Device">POS ID</string>
+    <string name="receipt_print_Operator">Operator Name</string>
+    <string name="receipt_print_DepositAmount">Deposit Amount(TK)</string>
+    <string name="receipt_print_PreviousBalance">Previous Balance(TK)</string>
+    <string name="receipt_print_CurrentBalance">Current Balance(TK)</string>
+    <string name="receipt_print_PrintTK">(TK)</string>
+    <string name="receipt_print_PrintCredit">Account Credit(TK)</string>
+    <string name="receipt_print_PrintGasChrage">Gas Recharge(TK)</string>
+    <string name="receipt_print_PrintGasVolume">Gas Volume(m3)</string>
+    <string name="receipt_print_PrintMeterRent">Meter Rent(TK)</string>
+    <string name="receipt_print_PrintOtherCharges">Other Charges(TK)</string>
+    <string name="receipt_print_Price">Item Price</string>
+    <string name="receipt_print_PrintPrice">Price</string>
+    <string name="CardRead_Alert_Button2">Cancel</string>
+    <string name="InspectCard_Properties_Version">Version Number</string>
+    <string name="InspectCard_Properties_CardId">Card Id</string>
+    <string name="InspectCard_Properties_CustomerId">Customer Id</string>
+    <string name="InspectCard_Properties_CardGroup">Card Group</string>
+    <string name="InspectCard_Properties_CardStatus">Card Status</string>
+    <string name="InspectCard_Properties_Credit">Credit</string>
+    <string name="InspectCard_Properties_Unit">Unit</string>
+    <string name="InspectCard_Properties_BasicFee">Basic Fee</string>
+    <string name="InspectCard_Properties_Refund1">Refund 1</string>
+    <string name="InspectCard_Properties_Refund2">Refund 2</string>
+    <string name="InspectCard_Properties_UntreatedFee">Untreated Fee</string>
+    <string name="InspectCard_Properties_CardHistorynumber">Card History Number</string>
+    <string name="InspectCard_Properties_ErrorNumber">Error Number</string>
+    <string name="InspectCard_Properties_OpenCount">Open Count</string>
+    <string name="InspectCard_Properties_LidTime">Lid Time</string>
+    <string name="CardRead_Alert_Button1">OK</string>
+
+
+
+
+
 
 </resources>
