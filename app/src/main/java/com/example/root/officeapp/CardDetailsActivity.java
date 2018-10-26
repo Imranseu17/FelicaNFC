@@ -39,7 +39,7 @@ public class CardDetailsActivity extends AppCompatActivity {
 
     public void findbyCardNO() {
 
-        String url = "http://192.168.1.33:8080/api/findByCardNo/" + Rcid;
+        String url = "http://192.168.0.111:8080/api/findByCardNo/" + Rcid;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, null, new Response.Listener<JSONObject>() {

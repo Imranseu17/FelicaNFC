@@ -36,7 +36,7 @@ public class CardHistoryActivity extends AppCompatActivity {
     }
 
     void fetchingData(){
-        final String myURL ="http://192.168.1.33:8080/api/findcard_history/"+ MainApplication.cardID;
+        final String myURL ="http://192.168.0.111:8080/api/findcard_history/"+ MainApplication.cardID;
 
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(myURL, new Response.Listener<JSONArray>() {
             @Override

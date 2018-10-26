@@ -1,6 +1,8 @@
 package com.example.root.officeapp.nfcfelica;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.nfc.Tag;
 import android.nfc.TagLostException;
 import android.nfc.tech.NfcF;
@@ -8,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.internal.view.SupportMenu;
 
 import com.epson.epos2.keyboard.Keyboard;
+import com.example.root.officeapp.ReadCard;
+import com.example.root.officeapp.golobal.MainApplication;
 import com.example.root.officeapp.lang.StringUtils;
 import com.google.common.base.Ascii;
 
@@ -29,19 +33,22 @@ import java.util.Locale;
 import java.util.Random;
 
 public final class FelicaAccess {
-    private ArrayList<byte[]> LogDay;
-    private ArrayList<byte[]> LogHour;
+    public ArrayList<byte[]> LogDay;
+    public ArrayList<byte[]> LogHour;
     private byte byCardGroup;
     private byte byCardStatus;
     private boolean isChargeCheckFailed = false;
-    private int size;
+    public int size;
     private String strCardId;
     private String strCustomerId;
-    private byte[] targetIDm;
-    private byte[] targetServiceCode;
+    public byte[] targetIDm;
+    public byte[] targetServiceCode;
     private byte[] targetSystemCode;
+    public HttpResponsAsync.ReadCardArgument readCardArgument;
 
-    private class BlockDataList {
+
+
+    public  class BlockDataList {
         ArrayList<ReadBlockData> dataList = new ArrayList();
 
         BlockDataList() {
@@ -71,7 +78,7 @@ public final class FelicaAccess {
             }
         }
 
-        byte[] GetReadBlockData(int Block) {
+      public   byte[] GetReadBlockData(int Block) {
             byte[] result = null;
             Iterator it = this.dataList.iterator();
             while (it.hasNext()) {
@@ -95,7 +102,7 @@ public final class FelicaAccess {
         Encrypt
     }
 
-    private class ReadBlockData {
+    public class ReadBlockData {
         public int ReadBlock;
         public byte[] ReadData;
 
@@ -293,7 +300,7 @@ public final class FelicaAccess {
         return msg;
     }
 
-    private byte[] readWithoutEncryption(byte[] idm, int size, byte[] serviceCode, int startBlock) throws IOException {
+    public byte[] readWithoutEncryption(byte[] idm, int size, byte[] serviceCode, int startBlock) throws IOException {
         ByteArrayOutputStream bout = new ByteArrayOutputStream(100);
         bout.write(0);
         bout.write(6);
@@ -381,7 +388,7 @@ public final class FelicaAccess {
         return msg;
     }
 
-    private byte[][] parse(byte[] res) throws Exception {
+    public byte[][] parse(byte[] res) throws Exception {
         if (res[10] != (byte) 0) {
             RuntimeException runtimeException = new RuntimeException("Read Without Encryption Command Error");
         }
@@ -548,7 +555,7 @@ public final class FelicaAccess {
     public boolean SetReadCardData(Tag tag, HttpResponsAsync WebApi, HttpResponsAsync.ReadCardArgument SetData) {
         FelicaAccess felicaAccess = this;
         HttpResponsAsync httpResponsAsync = WebApi;
-        HttpResponsAsync.ReadCardArgument readCardArgument = SetData;
+        readCardArgument = SetData;
         NfcF nfc = NfcF.get(tag);
         try {
             SetEnLocale();
@@ -591,6 +598,7 @@ public final class FelicaAccess {
                     felicaAccess.LogDay.add(felicaAccess.parse(res)[0]);
                 }
                 readCardArgument.VersionNo = String.valueOf(felicaAccess.GetVersionNo(datalist.GetReadBlockData(0)));
+
                 readCardArgument.CardStatus = String.valueOf(felicaAccess.GetCardStatus(datalist.GetReadBlockData(3)));
                 readCardArgument.CardIdm = _cardIdm;
                 readCardArgument.CustomerId = String.valueOf(felicaAccess.GetCustomerId(datalist.GetReadBlockData(1), datalist.GetReadBlockData(2)));
@@ -1724,7 +1732,7 @@ public final class FelicaAccess {
         SetBitStringToByte(bArr, IsEncryption.NotEncrypt, ToBCD(Integer.valueOf(versionNo), 2), 0, 1);
     }
 
-    private int GetVersionNo(byte[] getData) {
+    public int GetVersionNo(byte[] getData) {
         return BCDTo(GetByteToBitString(getData, IsEncryption.NotEncrypt, 0, 1));
     }
 
@@ -1734,7 +1742,7 @@ public final class FelicaAccess {
             if (r0.equals("15") != false) goto L_0x004e;
      */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    private byte GetCardStatus(byte[] getData) {
+    public byte GetCardStatus(byte[] getData) {
         int i = 1;
         String cardStatus = GetByteToHexString(getData, IsEncryption.Encrypt, 0, 1);
         int hashCode = cardStatus.hashCode();

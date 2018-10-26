@@ -1,6 +1,6 @@
 package com.example.root.officeapp.nfcfelica;
 
-final class PropetiesListData {
+public final class PropetiesListData {
     long lId = 0;
     String strName;
     String strValue;
