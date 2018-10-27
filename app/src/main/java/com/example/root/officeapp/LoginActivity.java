@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     public void UserLogin() {
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111:8080/api/loginJava",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.1.29:8080/api/loginJava",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String ServerResponse) {

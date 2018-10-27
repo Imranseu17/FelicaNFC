@@ -20,6 +20,7 @@ import com.example.root.officeapp.felicatag.NfcException;
 import com.example.root.officeapp.golobal.MainApplication;
 import com.example.root.officeapp.nfcfelica.FelicaAccess;
 import com.example.root.officeapp.nfcfelica.HttpResponsAsync;
+import com.example.root.officeapp.nfcfelica.NfcReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -127,6 +128,11 @@ public class ReadCard extends AppCompatActivity {
 
 
 
+        felicaAccess.readTag(tag);
+
+        NfcReader nfcReader = new NfcReader();
+            nfcReader.ReadTag(tag);
+
 
 
 
@@ -142,6 +148,19 @@ public class ReadCard extends AppCompatActivity {
         try {
 
             BlockDataList blockDataList = new BlockDataList();
+
+            String versionNO =
+                    String.valueOf
+                            (felicaAccess.GetVersionNo
+                                    (blockDataList.GetReadBlockData(0)));
+            String cardStatus =
+                    String.valueOf(felicaAccess.GetCardStatus
+                            (blockDataList.GetReadBlockData(3)));
+            String customerID =
+                    String.valueOf(
+                    felicaAccess.GetCustomerId
+                            (blockDataList.GetReadBlockData(1),
+                                    blockDataList.GetReadBlockData(2)));
 //            NfcF nfc = NfcF.get(tag);
 //
 //            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 0)))[0], 0, true);
@@ -179,6 +198,9 @@ public class ReadCard extends AppCompatActivity {
                     +"\n"+"System Code Bytes: "+systemCode.getBytes()+
                     "Block: "+block.getBytes()+
                     "\n"+"Memory Configuration: "+memoryConfigurationBlock.toString()
+                    +"\n"+"VersionNO: "+versionNO
+                    +"\n"+"CustomerID: "+customerID
+                    +"\n"+"CradStatus: "+cardStatus
 
 
 

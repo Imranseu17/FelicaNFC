@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ReadCard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,7 +44,7 @@
         <activity android:name=".AccountSearchActivity" />
         <activity android:name=".InspectCardActivity" />
         <activity android:name=".CardPropertiesActivity" />
-        <activity android:name=".ReadCard" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".CardDetailsActivity" />
         <activity android:name=".CardHistoryActivity" />
         <activity android:name=".ErrorHistoryActivity" />

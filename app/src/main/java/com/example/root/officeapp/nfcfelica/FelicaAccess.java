@@ -3,9 +3,11 @@ package com.example.root.officeapp.nfcfelica;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.nfc.TagLostException;
 import android.nfc.tech.NfcF;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.internal.view.SupportMenu;
 
@@ -45,7 +47,6 @@ public final class FelicaAccess {
     public byte[] targetServiceCode;
     private byte[] targetSystemCode;
     public HttpResponsAsync.ReadCardArgument readCardArgument;
-
 
 
     public  class BlockDataList {
@@ -602,6 +603,8 @@ public final class FelicaAccess {
                 readCardArgument.CardStatus = String.valueOf(felicaAccess.GetCardStatus(datalist.GetReadBlockData(3)));
                 readCardArgument.CardIdm = _cardIdm;
                 readCardArgument.CustomerId = String.valueOf(felicaAccess.GetCustomerId(datalist.GetReadBlockData(1), datalist.GetReadBlockData(2)));
+
+
                 readCardArgument.CardGroup = String.valueOf(felicaAccess.GetCardGroup(datalist.GetReadBlockData(2)));
                 readCardArgument.Credit = String.valueOf(felicaAccess.GetCredit(datalist.GetReadBlockData(3)));
                 readCardArgument.Unit = String.valueOf(felicaAccess.GetUnit(datalist.GetReadBlockData(3)));
@@ -1854,7 +1857,7 @@ public final class FelicaAccess {
         }
     }
 
-    private String GetCustomerId(byte[] getData1, byte[] getData2) {
+    public String GetCustomerId(byte[] getData1, byte[] getData2) {
         String result = "";
         byte[] _b = new byte[20];
         if (getData1.length != 16) {
