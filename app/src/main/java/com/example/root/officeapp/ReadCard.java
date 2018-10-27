@@ -39,7 +39,7 @@ public class ReadCard extends AppCompatActivity {
     ImageView imageView;
     TextView textView;
     FelicaAccess felicaAccess = new FelicaAccess();
-    ArrayList<ReadCard.ReadBlockData> dataList = new ArrayList();
+    ArrayList<ReadBlockData> dataList = new ArrayList();
 
 
 
@@ -130,37 +130,22 @@ public class ReadCard extends AppCompatActivity {
 
         felicaAccess.readTag(tag);
 
-        NfcReader nfcReader = new NfcReader();
-            nfcReader.ReadTag(tag);
-
-
-
-
-
-
-
-
-
-
-
-
-
         try {
 
-            BlockDataList blockDataList = new BlockDataList();
+
 
             String versionNO =
                     String.valueOf
                             (felicaAccess.GetVersionNo
-                                    (blockDataList.GetReadBlockData(0)));
+                                    (GetReadBlockData(0)));
             String cardStatus =
                     String.valueOf(felicaAccess.GetCardStatus
-                            (blockDataList.GetReadBlockData(3)));
+                            (GetReadBlockData(3)));
             String customerID =
                     String.valueOf(
                     felicaAccess.GetCustomerId
-                            (blockDataList.GetReadBlockData(1),
-                                    blockDataList.GetReadBlockData(2)));
+                            (GetReadBlockData(1),
+                                    GetReadBlockData(2)));
 //            NfcF nfc = NfcF.get(tag);
 //
 //            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 0)))[0], 0, true);
@@ -231,32 +216,7 @@ public class ReadCard extends AppCompatActivity {
 
 
 
-    class BlockDataList {
-        ArrayList<ReadBlockData> dataList = new ArrayList();
 
-        BlockDataList() {
-        }
-
-        void AddReadBlockData(byte[] Data, int Block, boolean Overwrite) {
-            boolean found = false;
-            Iterator it = this.dataList.iterator();
-            while (it.hasNext()) {
-                FelicaAccess.ReadBlockData ReadData = (FelicaAccess.ReadBlockData) it.next();
-                if (ReadData.ReadBlock == Block) {
-                    if (Overwrite) {
-                        ReadData.ReadData = Data;
-                    }
-                    found = true;
-                    if (found) {
-                        this.dataList.add(new ReadBlockData(Data, Block));
-                        return;
-                    }
-                    return;
-                }
-            }
-            if (found) {
-            }
-        }
 
 
            byte[] GetReadBlockData(int Block) {
@@ -276,7 +236,7 @@ public class ReadCard extends AppCompatActivity {
             dataList.add(addData);
             return addData.ReadData;
         }
-    }
+
 
 
 
