@@ -17,12 +17,15 @@ import android.widget.TextView;
 import com.example.root.officeapp.felica.lib.FeliCaLib;
 import com.example.root.officeapp.felicatag.FelicaTag;
 import com.example.root.officeapp.felicatag.NfcException;
+import com.example.root.officeapp.felicatag.ReadResponse;
 import com.example.root.officeapp.golobal.MainApplication;
 import com.example.root.officeapp.nfcfelica.FelicaAccess;
 import com.example.root.officeapp.nfcfelica.HttpResponsAsync;
 import com.example.root.officeapp.nfcfelica.NfcReader;
+import com.example.root.officeapp.nfcfelica.SettingData;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -40,6 +43,7 @@ public class ReadCard extends AppCompatActivity {
     TextView textView;
     FelicaAccess felicaAccess = new FelicaAccess();
     ArrayList<ReadBlockData> dataList = new ArrayList();
+    Tag tag;
 
 
 
@@ -111,7 +115,7 @@ public class ReadCard extends AppCompatActivity {
         imageView.clearAnimation();
         imageView.setVisibility(View.GONE);
         textView.setVisibility(View.GONE);
-        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+         tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         if (tag == null) {
             return;
         }
@@ -128,7 +132,11 @@ public class ReadCard extends AppCompatActivity {
 
 
 
+
+
         felicaAccess.readTag(tag);
+
+
 
         try {
 
@@ -143,27 +151,11 @@ public class ReadCard extends AppCompatActivity {
                             (GetReadBlockData(3)));
             String customerID =
                     String.valueOf(
-                    felicaAccess.GetCustomerId
-                            (GetReadBlockData(1),
+                    felicaAccess. GetCustomerId
+                            (tag.getId(),
                                     GetReadBlockData(2)));
-//            NfcF nfc = NfcF.get(tag);
-//
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 0)))[0], 0, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 1)))[0], 1, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 2)))[0], 2, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 3)))[0], 3, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 4)))[0], 4, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 5)))[0], 5, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 6)))[0], 6, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 7)))[0], 7, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 8)))[0], 8, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 11)))[0], 11, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 12)))[0], 12, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 13)))[0], 13, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 14)))[0], 14, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 15)))[0], 15, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 16)))[0], 16, true);
-//            blockDataList.AddReadBlockData(felicaAccess.parse(nfc.transceive(felicaAccess.readWithoutEncryption(felicaAccess.targetIDm, felicaAccess.size, felicaAccess.targetServiceCode, 17)))[0], 17, true);
+
+
 
 
 
@@ -260,6 +252,8 @@ public class ReadCard extends AppCompatActivity {
             this.ReadData = initData;
         }
     }
+
+
 
 
 
