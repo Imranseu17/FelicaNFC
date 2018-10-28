@@ -272,12 +272,13 @@ public class ReadCard extends AppCompatActivity {
                 byCardStatus = GetCardStatus(datalist.GetReadBlockData(3));
 //                 String CardStatus = String.valueOf(GetCardStatus(datalist.GetReadBlockData(3)));
                 System.out.print(String.valueOf(byCardStatus));
-                //             byCardGroup = GetCardGroup(datalist.GetReadBlockData(2));
+                byCardGroup = GetCardGroup(datalist.GetReadBlockData(2));
                 strCustomerId = GetCustomerId(datalist.GetReadBlockData(1), datalist.GetReadBlockData(2));
                 System.out.print(strCustomerId);
 
                 textdata.setText("CardStatus: "+String.valueOf(byCardStatus)
-                +"\n"+"CustomerID: "+strCustomerId);
+                +"\n"+"CustomerID: "+strCustomerId
+                +"\n"+"CardGroup: "+String.valueOf(byCardGroup));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -608,6 +609,47 @@ public class ReadCard extends AppCompatActivity {
             }
             return result;
         }
+    }
+
+    private byte GetCardGroup(byte[] getData) {
+        int i = 1;
+        String _s = GetByteToHexString(getData, IsEncryption.Encrypt, 15, 1);
+        int hashCode = _s.hashCode();
+        if (hashCode == 1536) {
+            if (_s.equals("00")) {
+                i = 0;
+                switch (i) {
+                    case 0:
+                    case 1:
+                    case 2:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } else if (hashCode != 1760) {
+            if (hashCode == 1792 && _s.equals("88")) {
+                i = 2;
+                switch (i) {
+                    case 0:
+                    case 1:
+                    case 2:
+                        return (byte) hex2int(_s);
+                    default:
+                        throw new RuntimeException("CardGroup");
+                }
+            }
+        }
+        i = -1;
+        switch (i) {
+            case 0:
+            case 1:
+            case 2:
+                break;
+            default:
+                break;
+        }
+        return 0;
     }
 
 
