@@ -1,19 +1,13 @@
 package com.example.root.officeapp.nfcfelica;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.nfc.TagLostException;
 import android.nfc.tech.NfcF;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.internal.view.SupportMenu;
 
 import com.epson.epos2.keyboard.Keyboard;
-import com.example.root.officeapp.ReadCard;
-import com.example.root.officeapp.golobal.MainApplication;
 import com.example.root.officeapp.lang.StringUtils;
 import com.google.common.base.Ascii;
 

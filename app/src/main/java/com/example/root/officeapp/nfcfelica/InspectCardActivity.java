@@ -61,6 +61,9 @@ public class InspectCardActivity extends AppCompatActivity {
         this.mAdapter = NfcAdapter.getDefaultAdapter(getApplicationContext());
         NewWebApi();
         InitReadCard();
+
+
+
     }
 
     protected void onResume() {
@@ -121,6 +124,8 @@ public class InspectCardActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     public void ReadCard(Tag tag) {
         HttpResponsAsync httpResponsAsync = this.WebApi;

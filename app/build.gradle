@@ -37,4 +37,7 @@ dependencies {
     implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
     implementation files('libs/ePOS2.jar')
     implementation files('libs/ePOSEasySelect.jar')
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.1'
+
 }
