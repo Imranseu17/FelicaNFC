@@ -649,7 +649,7 @@ public class ReadCard extends AppCompatActivity {
             default:
                 break;
         }
-        return 0;
+        return (byte) hex2int(_s);
     }
 
 
