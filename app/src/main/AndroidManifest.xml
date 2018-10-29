@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReadCard">
+        <activity android:name=".NFCcheckActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,14 +37,14 @@
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".NFCcheckActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".LanguageActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ReportActivity" />
         <activity android:name=".AccountSearchActivity" />
         <activity android:name=".InspectCardActivity" />
         <activity android:name=".CardPropertiesActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ReadCard" />
         <activity android:name=".CardDetailsActivity" />
         <activity android:name=".CardHistoryActivity" />
         <activity android:name=".ErrorHistoryActivity" />
@@ -69,6 +69,7 @@
             android:name=".RecycleViewActivity"
             android:label="@string/title_activity_recycle_view"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".GasReachargeActivity"></activity>
     </application>
 
 </manifest>

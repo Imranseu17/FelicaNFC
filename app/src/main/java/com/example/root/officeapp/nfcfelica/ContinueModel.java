@@ -2,13 +2,13 @@ package com.example.root.officeapp.nfcfelica;
 
 import android.support.annotation.NonNull;
 
-class ContinueModel {
+public class ContinueModel {
     public int ContinueCon = 0;
     public int ContinueFlg = 0;
     public int ContinueTime = 0;
     public int ContinueValue = 0;
 
-    ContinueModel() {
+  public   ContinueModel() {
     }
 
     public boolean Equals(@NonNull ContinueModel model) {

@@ -155,8 +155,8 @@
     <string name="spinner_noselected">Select One</string>
     <string name="required_alert_title">Warning</string>
     <string name="CardRead_Alert_Title">Card Reader</string>
-    <string name="processing_failed_alert_title"/>
-    <string name="readcard_failed_alert_title"/>
+    <string name="processing_failed_alert_title" />
+    <string name="readcard_failed_alert_title" />
     <string name="receipt_alert_title">Receipt</string>
     <string name="receipt_alert_msg">Do you reissue the receipt?</string>
     <string name="receipt_RePrint_ConfirmTitle">Failed to print out.</string>
@@ -242,10 +242,6 @@
     <string name="InspectCard_Properties_OpenCount">Open Count</string>
     <string name="InspectCard_Properties_LidTime">Lid Time</string>
     <string name="CardRead_Alert_Button1">OK</string>
-
-
-
-
 
 
 </resources>

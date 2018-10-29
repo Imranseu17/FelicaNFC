@@ -2,7 +2,7 @@ package com.example.root.officeapp.nfcfelica;
 
 import android.support.annotation.NonNull;
 
-class Cng2Model {
+public class Cng2Model {
     public int EmergencyConFlg = 0;
     public int EmergencyValueFlg = 0;
     public int FlowDetectionFlg = 0;
@@ -10,7 +10,7 @@ class Cng2Model {
     public int QuakeConFlg = 0;
     public int ReductionConFlg = 0;
 
-    Cng2Model() {
+   public Cng2Model() {
     }
 
     public boolean Equals(@NonNull Cng2Model model) {

@@ -2,7 +2,7 @@ package com.example.root.officeapp.nfcfelica;
 
 import android.support.annotation.NonNull;
 
-class CngModel {
+public class CngModel {
     public int ClockTimeFlg = 0;
     public int ContinueFlg1 = 0;
     public int ContinueFlg2 = 0;
@@ -15,7 +15,7 @@ class CngModel {
     public int WeekControlFlg = 0;
     public int WeekStartFlg = 0;
 
-    CngModel() {
+    public CngModel() {
     }
 
     public boolean Equals(@NonNull CngModel model) {
