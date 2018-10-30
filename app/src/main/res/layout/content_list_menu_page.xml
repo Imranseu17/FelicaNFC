@@ -7,7 +7,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="17dp"
         android:padding="10dp"
         android:background="#fcfcfc"
         tools:context = ".ListMenuPageActivity"
@@ -84,13 +84,13 @@
 
 
                 <Button
-                    android:id="@+id/btn_report"
+                    android:id="@+id/btn_recharge"
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:gravity="center"
                     android:layout_below="@+id/btn_settings"
                     android:layout_height="40dp"
-                    android:text="@string/report_eng"
+                    android:text="@string/gasrecharge_eng"
                     android:textSize="14dp"
                     android:background="@drawable/roundedbutton"
                     android:textColor="@android:color/black"
@@ -106,6 +106,20 @@
                     android:gravity="center"
                     android:layout_height="40dp"
                     android:text="@string/settings_eng"
+                    android:textSize="14dp"
+                    android:background="@drawable/roundedbutton"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/btn_report"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="40dp"
+                    android:text="@string/report_eng"
                     android:textSize="14dp"
                     android:background="@drawable/roundedbutton"
                     android:textColor="@android:color/black"

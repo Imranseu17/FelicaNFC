@@ -93,6 +93,7 @@ public class ServiceChargeActivity extends AppCompatActivity {
             setTitle(" সサービス料 ");
             chargeText.setText(" সサービス料 ");
             chargeSelectText.setText(" 料金を選択してください ");
+            save.setText("セーブ");
 
 
         }
@@ -102,6 +103,7 @@ public class ServiceChargeActivity extends AppCompatActivity {
             setTitle(" সেবা খরচ ");
             chargeText.setText(" সেবা খরচ ");
             chargeSelectText.setText(" চার্জ নির্বাচন করুন ");
+            save.setText("সংরক্ষণ করুন");
 
         }
 
@@ -110,6 +112,7 @@ public class ServiceChargeActivity extends AppCompatActivity {
             setTitle(" Service charge ");
             chargeText.setText(" Service charge ");
             chargeSelectText.setText(" Please Select the charge ");
+            save.setText("Save");
 
         }
 

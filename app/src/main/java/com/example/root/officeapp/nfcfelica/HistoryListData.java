@@ -1,6 +1,6 @@
 package com.example.root.officeapp.nfcfelica;
 
-final class HistoryListData {
+public final class HistoryListData {
     long lId = 0;
     String strNo;
     String strTime;

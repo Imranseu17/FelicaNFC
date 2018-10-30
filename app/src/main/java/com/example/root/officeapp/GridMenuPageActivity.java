@@ -18,7 +18,7 @@ import com.example.root.officeapp.golobal.MainApplication;
 public class GridMenuPageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView read, accountSearch, report,  cardInspect, settings, logout,service;
+    TextView read, accountSearch, gascharge,report,  cardInspect, settings, logout,service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +39,18 @@ public class GridMenuPageActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         read = findViewById(R.id.btn_read);
         accountSearch = findViewById(R.id.btn_account);
-        report = findViewById(R.id.btn_report);
+        gascharge = findViewById(R.id.btn_recharge);
         cardInspect = findViewById(R.id.btn_card);
         settings = findViewById(R.id.btn_settings);
         logout = findViewById(R.id.btn_logout);
         service = findViewById(R.id.btn_service);
+        report = findViewById(R.id.btn_report);
 
         if (MainApplication.message == "Japanese") {
             read.setText(getResources().getString(R.string.readcard_japan));
             accountSearch.setText(getResources().getString(R.string.accountserch_japan));
             service.setText(getResources().getString(R.string.servicecharge_japanese));
+            gascharge.setText(getResources().getString(R.string.gasrecharge_japan));
             report.setText(getResources().getString(R.string.report_japan));
             cardInspect.setText(getResources().getString(R.string.card_japan));
             settings.setText(getResources().getString(R.string.settings_japan));
@@ -57,6 +59,7 @@ public class GridMenuPageActivity extends AppCompatActivity
             read.setText(getResources().getString(R.string.readcard_ban));
             accountSearch.setText(getResources().getString(R.string.accountserch_ban));
             service.setText(getResources().getString(R.string.servicecharge_ban));
+            gascharge.setText(getResources().getString(R.string.gasrecharge_ban));
             report.setText(getResources().getString(R.string.report_ban));
             cardInspect.setText(getResources().getString(R.string.card_ban));
             settings.setText(getResources().getString(R.string.settings_ban));
@@ -65,6 +68,7 @@ public class GridMenuPageActivity extends AppCompatActivity
             read.setText(getResources().getString(R.string.readcard_eng));
             accountSearch.setText(getResources().getString(R.string.accountserch_eng));
             service.setText(getResources().getString(R.string.servicecharge_eng));
+            gascharge.setText(getResources().getString(R.string.gasrecharge_eng));
             report.setText(getResources().getString(R.string.report_eng));
             cardInspect.setText(getResources().getString(R.string.card_eng));
             settings.setText(getResources().getString(R.string.settings_eng));
@@ -94,10 +98,10 @@ public class GridMenuPageActivity extends AppCompatActivity
             }
         });
 
-        report.setOnClickListener(new View.OnClickListener() {
+        gascharge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GridMenuPageActivity.this, ReportActivity.class));
+                startActivity(new Intent(GridMenuPageActivity.this, GasReachargeActivity.class));
             }
         });
 
@@ -119,6 +123,13 @@ public class GridMenuPageActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(GridMenuPageActivity.this,ServiceChargeActivity.class));
+            }
+        });
+
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GridMenuPageActivity.this,ReportActivity.class));
             }
         });
     }

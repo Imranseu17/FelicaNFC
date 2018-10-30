@@ -242,6 +242,21 @@
     <string name="InspectCard_Properties_OpenCount">Open Count</string>
     <string name="InspectCard_Properties_LidTime">Lid Time</string>
     <string name="CardRead_Alert_Button1">OK</string>
+    <string name="selectCharge_eng">Please Select the charge</string>
+    <string name="selectCharge_ban">চার্জ নির্বাচন করুন</string>
+    <string name="selectCharge_japan">料金を選択してください</string>
+    <string name="afterselectCharge_eng">After select the charge then tab NFC Card</string>
+    <string name="afterselectCharge_japan">充電を選択した後、NFCカードをタップします</string>
+    <string name="afterselectCharge_ban">চার্জ নির্বাচন করার পর ট্যাব এনএফসি কার্ড</string>
+    <string name="gasrecharge_eng">Gas Recharge</string>
+    <string name="gasrecharge_ban">গ্যাস রিচার্জ</string>
+    <string name="gasrecharge_japan">ガス再チャージ</string>
+    <string name="selectedcharge_eng">This Charge is Selected</string>
+    <string name="selectedcharge_ban">এই চার্জ নির্বাচিত হয়</string>
+    <string name="selectedcharge_japan">このチャージが選択されている</string>
+
+
+
 
 
 </resources>

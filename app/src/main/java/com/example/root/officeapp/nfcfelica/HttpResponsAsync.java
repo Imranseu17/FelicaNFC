@@ -89,7 +89,7 @@ public class HttpResponsAsync extends AsyncTask<Void, Void, String> {
     public static class ReadCardArgument {
         String BasicFee;
         String CardGroup;
-        ArrayList<ReadCardArgumentCardHistory> CardHistory = new ArrayList();
+        public ArrayList<ReadCardArgumentCardHistory> CardHistory = new ArrayList();
         String CardHistoryNo;
         String CardIdm;
         String CardStatus;
@@ -114,8 +114,8 @@ public class HttpResponsAsync extends AsyncTask<Void, Void, String> {
     }
 
     public static class ReadCardArgumentCardHistory {
-        String HistoryTime;
-        String HistoryType;
+        public String HistoryTime;
+        public String HistoryType;
     }
 
     public static class ReadCardArgumentConfigData {

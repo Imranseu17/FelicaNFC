@@ -3,6 +3,7 @@ package com.example.root.officeapp;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.TagLostException;
@@ -17,14 +18,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.epson.epos2.keyboard.Keyboard;
 import com.example.root.officeapp.golobal.MainApplication;
+import com.example.root.officeapp.lang.StringUtils;
 import com.example.root.officeapp.nfcfelica.Cng2Model;
 import com.example.root.officeapp.nfcfelica.CngModel;
 import com.example.root.officeapp.nfcfelica.Common;
 import com.example.root.officeapp.nfcfelica.ContinueModel;
 import com.example.root.officeapp.nfcfelica.FelicaAccess;
+import com.example.root.officeapp.nfcfelica.HistoryListData;
+import com.example.root.officeapp.nfcfelica.HttpResponsAsync;
 import com.example.root.officeapp.nfcfelica.ParModel;
 import com.example.root.officeapp.nfcfelica.SettingData;
 import com.google.common.base.Ascii;
@@ -39,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Random;
@@ -59,17 +65,11 @@ public class ReadCard extends AppCompatActivity {
     byte byCardGroup,byCardStatus;
     byte [] TargetIDm,targetServiceCode;
     String strCustomerId, cardGroup, cardStatus,versionNO,cardIDm,credit,unit,
-            basicFee,refund1,refund2,untreatedFee,openCount,lidTime,indexValue;
+            basicFee,refund1,refund2,untreatedFee,openCount,lidTime,indexValue,LidTime;
     int size,historyNO,errorNO;
     private boolean isChargeCheckFailed = false;
-
-
-
-
-
-
-
-
+    private static Resources resources = Resources.getSystem();
+    HttpResponsAsync.ReadCardArgument ReadCardData;
 
 
     @Override
@@ -320,12 +320,25 @@ public class ReadCard extends AppCompatActivity {
                 historyNO = Integer.parseInt(String.valueOf(GetCardHistoryNo(datalist.GetReadBlockData(5)))) ;
                 errorNO = Integer.parseInt(String.valueOf(GetErrorNo(datalist.GetReadBlockData(5))));
                 openCount = String.valueOf(GetOpenCount(datalist.GetReadBlockData(7)));
-                lidTime = GetWebApiDate(GetLidTime(datalist.GetReadBlockData(7)));
+                lidTime = GetWebApiDate(GetLidTime(datalist.GetReadBlockData(7))) ;
                 indexValue = String.valueOf(GetIndexValue(datalist.GetReadBlockData(5)));
+                LidTime = getFormatDate(lidTime);
+
+                ReadCardData = new HttpResponsAsync.ReadCardArgument();
+
+                ArrayList<HistoryListData> historyListData = new ArrayList();
+                for (int i2 = 0; i2 < this.ReadCardData.CardHistory.size(); i2++) {
+                    HistoryListData dataTemp = new HistoryListData();
+                    HttpResponsAsync.ReadCardArgumentCardHistory cardHistory = (HttpResponsAsync.ReadCardArgumentCardHistory) this.ReadCardData.CardHistory.get(i2);
+                    dataTemp.setTime(Common.getFormatDate(cardHistory.HistoryTime));
+                    dataTemp.setType(cardHistory.HistoryType);
+                    historyListData.add(dataTemp);
+                }
 
 
 
-                textdata.setText("Version NO:"+versionNO+"\n"+
+                textdata.setText("*************  Card Properties  *************"+"\n"+"\n"+
+                        "Version NO:"+versionNO+"\n"+
                         "Card Status: "+ cardStatus+"\n"
                         +"Card ID: "+cardIDm
                 +"\n"+"Customer ID: "+strCustomerId
@@ -339,8 +352,9 @@ public class ReadCard extends AppCompatActivity {
                 +"\n"+"Card History NO: "+historyNO
                 +"\n"+"Card Error NO: "+errorNO
                 +"\n"+"Open Count: "+openCount
-                +"\n"+"Lid Time: "+lidTime
-                +"\n"+"IndexValue: "+indexValue);
+                +"\n"+"Lid Time: "+LidTime
+                +"\n"+"IndexValue: "+indexValue
+                +"\n"+"\n"+"*************  Card History  *************"+"\n"+"\n");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2028,6 +2042,26 @@ public class ReadCard extends AppCompatActivity {
 
     private double GetIndexValue(byte[] getData) {
         return ((double) BCDTo(GetByteToBitString(getData, IsEncryption.Encrypt, 0, 4))) / 1000.0d;
+    }
+
+    public static String getFormatDate(String strDate) {
+        Date date = null;
+        try {
+            date = new Date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate.replace("0001", "1970").replace("T", StringUtils.SPACE)).getTime());
+        } catch (ParseException e) {
+        }
+        SimpleDateFormat dateformat = new SimpleDateFormat(getLocalDateFormat(resources.getConfiguration().locale), resources.getConfiguration().locale);
+        Calendar cal_created = Calendar.getInstance();
+        cal_created.setTime(date);
+        return dateformat.format(cal_created.getTime()).replace("1970", "0001");
+    }
+
+    private static String getLocalDateFormat(Locale locale) {
+        String result = "";
+        String language = locale.getLanguage();
+        if (language.hashCode() == 3241 && language.equals("en")) {
+        }
+        return "MMM d, yyyy HH:mm a";
     }
 
 
