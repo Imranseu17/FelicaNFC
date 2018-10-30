@@ -38,6 +38,27 @@
             android:textStyle="bold"
             android:id="@+id/textdata" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textdata">
+
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cardHistory" />
+
+
+
+        <ListView
+            android:layout_below="@+id/cardHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cardErrorList" />
+
+    </RelativeLayout>
+
 
 
 

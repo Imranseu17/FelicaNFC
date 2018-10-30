@@ -2,7 +2,7 @@ package com.example.root.officeapp.nfcfelica;
 
 import java.util.Calendar;
 
-class GMA_ERROR_HISTORY {
+public class GMA_ERROR_HISTORY {
     public int ErrorGroup;
     public Calendar ErrorTime = Calendar.getInstance();
     public String ErrorType;

@@ -1,6 +1,6 @@
 package com.example.root.officeapp.nfcfelica;
 
-class FelicaBlock {
+public class FelicaBlock {
     public static final int BasicFee_Block = 3;
     public static final int BasicFee_End = 15;
     public static final int BasicFee_Length = 4;

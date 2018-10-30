@@ -1,6 +1,6 @@
 package com.example.root.officeapp.nfcfelica;
 
-final class ErrorListData {
+public final class ErrorListData {
     long lId = 0;
     String strGroup;
     String strTime;

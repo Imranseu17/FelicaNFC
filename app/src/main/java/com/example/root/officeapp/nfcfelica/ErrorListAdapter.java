@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import java.util.ArrayList;
 
 
-final class ErrorListAdapter extends BaseAdapter {
+public final class ErrorListAdapter extends BaseAdapter {
     Context context;
     ArrayList<ErrorListData> errorList;
     LayoutInflater layoutInflater = null;

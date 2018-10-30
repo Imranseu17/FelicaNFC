@@ -87,26 +87,26 @@ public class HttpResponsAsync extends AsyncTask<Void, Void, String> {
     public WebApiResponsListener mListener;
 
     public static class ReadCardArgument {
-        String BasicFee;
-        String CardGroup;
+        public String BasicFee;
+        public String CardGroup;
         public ArrayList<ReadCardArgumentCardHistory> CardHistory = new ArrayList();
-        String CardHistoryNo;
-        String CardIdm;
-        String CardStatus;
-        ReadCardArgumentConfigData ConfigData;
-        String Credit;
-        String CustomerId;
-        ArrayList<ReadCardArgumentErrorHistory> ErrorHistory = new ArrayList();
-        String ErrorNo;
-        String LidTime;
-        ArrayList<ReadCardArgumentLogDay> LogDay = new ArrayList();
-        ArrayList<ReadCardArgumentLogHour> LogHour = new ArrayList();
-        String OpenCount;
-        String Refund1;
-        String Refund2;
-        String Unit;
-        String UntreatedFee;
-        String VersionNo;
+        public String CardHistoryNo;
+        public String CardIdm;
+        public String CardStatus;
+        public ReadCardArgumentConfigData ConfigData;
+        public String Credit;
+        public String CustomerId;
+        public  ArrayList<ReadCardArgumentErrorHistory> ErrorHistory = new ArrayList();
+        public String ErrorNo;
+        public    String LidTime;
+        public  ArrayList<ReadCardArgumentLogDay> LogDay = new ArrayList();
+        public  ArrayList<ReadCardArgumentLogHour> LogHour = new ArrayList();
+        public String OpenCount;
+        public String Refund1;
+        public String Refund2;
+        public String Unit;
+       public String UntreatedFee;
+        public String VersionNo;
 
         public ReadCardArgument() {
             this.ConfigData = new ReadCardArgumentConfigData();
@@ -119,63 +119,63 @@ public class HttpResponsAsync extends AsyncTask<Void, Void, String> {
     }
 
     public static class ReadCardArgumentConfigData {
-        String ClockTime;
-        String ClockTimeFlg;
-        String ContinueCon1;
-        String ContinueCon2;
-        String ContinueFlg1;
-        String ContinueFlg2;
-        String ContinueTime1;
-        String ContinueTime2;
-        String ContinueValue1;
-        String ContinueValue2;
-        String EmergencyCon;
-        String EmergencyConFlg;
-        String EmergencyValue;
-        String EmergencyValueFlg;
-        String FlowDetection;
-        String FlowDetectionFlg;
-        String IndexValue;
-        String IndexValueFlg;
-        String LogCount;
-        String LogCountFlg;
-        String LogDays;
-        String LogDaysFlg;
-        String LogInterval;
-        String LogIntervalFlg;
-        String MaxFlowCon;
-        String MaxFlowFlg;
-        String MaxFlowValue;
-        String OpenCockCon;
-        String OpenCockFlg;
-        String OpenCoverCon;
-        String OpenCoverConFlg;
-        String QuakeCon;
-        String QuakeConFlg;
-        String ReductionCon;
-        String ReductionConFlg;
-        String RemoteValveCon;
-        String SleepModeFlg;
-        String WeekControl;
-        String WeekControlFlg;
-        String WeekStart;
-        String WeekStartFlg;
+        public String ClockTime;
+        public String ClockTimeFlg;
+        public String ContinueCon1;
+        public String ContinueCon2;
+        public String ContinueFlg1;
+        public String ContinueFlg2;
+        public String ContinueTime1;
+        public String ContinueTime2;
+        public String ContinueValue1;
+        public String ContinueValue2;
+        public String EmergencyCon;
+        public String EmergencyConFlg;
+        public String EmergencyValue;
+        public String EmergencyValueFlg;
+        public String FlowDetection;
+        public String FlowDetectionFlg;
+        public String IndexValue;
+        public String IndexValueFlg;
+        public String LogCount;
+        public String LogCountFlg;
+        public String LogDays;
+        public String LogDaysFlg;
+        public String LogInterval;
+        public String LogIntervalFlg;
+        public String MaxFlowCon;
+        public String MaxFlowFlg;
+        public String MaxFlowValue;
+        public String OpenCockCon;
+        public String OpenCockFlg;
+        public String OpenCoverCon;
+        public String OpenCoverConFlg;
+        public String QuakeCon;
+        public String QuakeConFlg;
+        public String ReductionCon;
+        public String ReductionConFlg;
+        public String RemoteValveCon;
+        public String SleepModeFlg;
+        public String WeekControl;
+        public String WeekControlFlg;
+        public String WeekStart;
+        public String WeekStartFlg;
     }
 
     public static class ReadCardArgumentErrorHistory {
-        String ErrorGroup;
-        String ErrorTime;
-        String ErrorType;
+        public String ErrorGroup;
+        public String ErrorTime;
+        public String ErrorType;
     }
 
     public static class ReadCardArgumentLogDay {
-        String GasTime;
-        String GasValue;
+        public String GasTime;
+        public String GasValue;
     }
 
     public static class ReadCardArgumentLogHour {
-        String GasTime;
-        String GasValue;
+        public String GasTime;
+        public String GasValue;
     }
 
     public interface WebApiResponsListener {

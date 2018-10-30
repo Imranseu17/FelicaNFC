@@ -1,5 +1,6 @@
 package com.example.root.officeapp;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -17,22 +18,33 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.epson.epos2.keyboard.Keyboard;
 import com.example.root.officeapp.golobal.MainApplication;
 import com.example.root.officeapp.lang.StringUtils;
+import com.example.root.officeapp.nfcfelica.ClockTimeModel;
 import com.example.root.officeapp.nfcfelica.Cng2Model;
 import com.example.root.officeapp.nfcfelica.CngModel;
+import com.example.root.officeapp.nfcfelica.CntModel;
 import com.example.root.officeapp.nfcfelica.Common;
 import com.example.root.officeapp.nfcfelica.ContinueModel;
-import com.example.root.officeapp.nfcfelica.FelicaAccess;
+import com.example.root.officeapp.nfcfelica.ErrorListAdapter;
+import com.example.root.officeapp.nfcfelica.ErrorListData;
+import com.example.root.officeapp.nfcfelica.FelicaBlock;
+import com.example.root.officeapp.nfcfelica.GMA_CARD_HISTORY;
+import com.example.root.officeapp.nfcfelica.GMA_ERROR_HISTORY;
+import com.example.root.officeapp.nfcfelica.GMA_LOG_DATA;
 import com.example.root.officeapp.nfcfelica.HistoryListData;
 import com.example.root.officeapp.nfcfelica.HttpResponsAsync;
+import com.example.root.officeapp.nfcfelica.MaxFlowModel;
+import com.example.root.officeapp.nfcfelica.OpenCockModel;
 import com.example.root.officeapp.nfcfelica.ParModel;
 import com.example.root.officeapp.nfcfelica.SettingData;
 import com.google.common.base.Ascii;
+
+import org.joda.time.DateTimeConstants;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -69,7 +81,15 @@ public class ReadCard extends AppCompatActivity {
     int size,historyNO,errorNO;
     private boolean isChargeCheckFailed = false;
     private static Resources resources = Resources.getSystem();
-    HttpResponsAsync.ReadCardArgument ReadCardData;
+    HttpResponsAsync.ReadCardArgument readCardArgument = new HttpResponsAsync.ReadCardArgument();
+
+    public ArrayList<byte[]> LogDay  = new ArrayList<>();
+    public ArrayList<byte[]> LogHour = new ArrayList<>();
+
+    HttpResponsAsync webAPI = new HttpResponsAsync();
+    ArrayList<HistoryListData> historyListData = new ArrayList();
+    ArrayList<ErrorListData> errorListData = new ArrayList();
+    ListView cardHistoryListView,cardErrorList;
 
 
     @Override
@@ -79,6 +99,8 @@ public class ReadCard extends AppCompatActivity {
         textdata = findViewById(R.id.textdata);
         imageView = findViewById(R.id.nfcImage);
         textView = findViewById(R.id.nfcText);
+        cardHistoryListView = findViewById(R.id.cardHistory);
+        cardErrorList = findViewById(R.id.cardErrorList);
         setTitle(" Read Card ");
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
         imageView.startAnimation(animation);
@@ -148,6 +170,69 @@ public class ReadCard extends AppCompatActivity {
 
        if(response){
            WriteStatus(tag,historyNO+1);
+       }
+
+      boolean data =   SetReadCardData(tag,webAPI,readCardArgument);
+
+
+        for (int i2 = 0; i2 < readCardArgument.CardHistory.size(); i2++) {
+            HistoryListData dataTemp = new HistoryListData();
+            HttpResponsAsync.ReadCardArgumentCardHistory cardHistory = readCardArgument.CardHistory.get(i2);
+            dataTemp.setTime(getFormatDate(cardHistory.HistoryTime));
+            dataTemp.setType(cardHistory.HistoryType);
+            historyListData.add(dataTemp);
+        }
+
+        for (int i2 = 0; i2 < readCardArgument.ErrorHistory.size(); i2++) {
+            ErrorListData dataTemp = new ErrorListData();
+            HttpResponsAsync.ReadCardArgumentErrorHistory cardErrorHistory = readCardArgument.ErrorHistory.get(i2);
+            dataTemp.setGroup(cardErrorHistory.ErrorGroup);
+            dataTemp.setTime(getFormatDate(cardErrorHistory.ErrorTime));
+            dataTemp.setType(cardErrorHistory.ErrorType);
+            errorListData.add(dataTemp);
+        }
+
+
+
+
+
+        HistoryListAdapter historyListAdapter = new HistoryListAdapter(this,
+                historyListData);
+
+        cardHistoryListView.setAdapter(historyListAdapter);
+
+        CardErrorListAdapter cardErrorListAdapter = new CardErrorListAdapter(
+                this,errorListData
+        );
+
+        cardErrorList.setAdapter(cardErrorListAdapter);
+
+
+
+
+
+
+
+
+       if(data){
+
+           textdata.setText("*************  Card Properties  *************"+"\n"+"\n"+
+                   "Version NO:"+readCardArgument.VersionNo+"\n"+
+                   "Card Status: "+  Integer.toHexString(Integer.parseInt(readCardArgument.CardStatus)) +"\n"
+                   +"Card ID: "+ readCardArgument.CardIdm
+                   +"\n"+"Customer ID: "+readCardArgument.CustomerId
+                   +"\n"+"Card Group: "+ Integer.toHexString(Integer.parseInt(readCardArgument.CardGroup))
+                   +"\n"+"Credit: "+readCardArgument.Credit
+                   +"\n"+"Unit: "+readCardArgument.Unit
+                   +"\n"+"Basic Fee: "+readCardArgument.BasicFee
+                   +"\n"+"Refund1: "+readCardArgument.Refund1
+                   +"\n"+"Refund2: "+readCardArgument.Refund2
+                   +"\n"+"Untreated Fee: "+readCardArgument.UntreatedFee
+                   +"\n"+"Card History NO: "+readCardArgument.CardHistoryNo
+                   +"\n"+"Card Error NO: "+readCardArgument.ErrorNo
+                   +"\n"+"Open Count: "+readCardArgument.OpenCount
+                   +"\n"+"Lid Time: "+readCardArgument.LidTime
+                   +"\n"+"\n"+"*************  Card History  *************");
        }
 
 
@@ -324,37 +409,11 @@ public class ReadCard extends AppCompatActivity {
                 indexValue = String.valueOf(GetIndexValue(datalist.GetReadBlockData(5)));
                 LidTime = getFormatDate(lidTime);
 
-                ReadCardData = new HttpResponsAsync.ReadCardArgument();
-
-                ArrayList<HistoryListData> historyListData = new ArrayList();
-                for (int i2 = 0; i2 < this.ReadCardData.CardHistory.size(); i2++) {
-                    HistoryListData dataTemp = new HistoryListData();
-                    HttpResponsAsync.ReadCardArgumentCardHistory cardHistory = (HttpResponsAsync.ReadCardArgumentCardHistory) this.ReadCardData.CardHistory.get(i2);
-                    dataTemp.setTime(Common.getFormatDate(cardHistory.HistoryTime));
-                    dataTemp.setType(cardHistory.HistoryType);
-                    historyListData.add(dataTemp);
-                }
+                
 
 
 
-                textdata.setText("*************  Card Properties  *************"+"\n"+"\n"+
-                        "Version NO:"+versionNO+"\n"+
-                        "Card Status: "+ cardStatus+"\n"
-                        +"Card ID: "+cardIDm
-                +"\n"+"Customer ID: "+strCustomerId
-                +"\n"+"Card Group: "+ cardGroup
-                +"\n"+"Credit: "+credit
-                +"\n"+"Unit: "+unit
-                +"\n"+"Basic Fee: "+basicFee
-                +"\n"+"Refund1: "+refund1
-                +"\n"+"Refund2: "+refund2
-                +"\n"+"Untreated Fee: "+untreatedFee
-                +"\n"+"Card History NO: "+historyNO
-                +"\n"+"Card Error NO: "+errorNO
-                +"\n"+"Open Count: "+openCount
-                +"\n"+"Lid Time: "+LidTime
-                +"\n"+"IndexValue: "+indexValue
-                +"\n"+"\n"+"*************  Card History  *************"+"\n"+"\n");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2064,6 +2123,771 @@ public class ReadCard extends AppCompatActivity {
         return "MMM d, yyyy HH:mm a";
     }
 
+
+    public boolean SetReadCardData(Tag tag, HttpResponsAsync WebApi, HttpResponsAsync.ReadCardArgument SetData) {
+
+        HttpResponsAsync httpResponsAsync = WebApi;
+
+
+        readCardArgument = SetData;
+        NfcF nfc = NfcF.get(tag);
+        try {
+
+            nfc.connect();
+            byte []   TargetSystemCode  =   new  byte [] { ( byte )  0xfe , ( byte )  0x00 };
+
+            // create polling command
+            byte []  polling  =  polling ( nfc.getSystemCode() );
+
+            // get the result by sending a command
+            byte []  PollingRes  =  nfc . transceive ( polling );
+
+            // Get the IDm of System 0 (1 byte data size, 2 byte response code, the size of the IDm is 8 bytes)
+            TargetIDm  =  Arrays. copyOfRange ( PollingRes ,  2 ,  10 );
+            String _cardIdm = GetCardIdm(TargetIDm);
+            if (strCardId.equals(_cardIdm)) {
+                int block;
+                int i;
+                HttpResponsAsync.ReadCardArgumentCardHistory WebApiCardHis;
+                BlockDataList datalist = new BlockDataList();
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 0)))[0], 0, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 1)))[0], 1, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 2)))[0], 2, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 3)))[0], 3, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 4)))[0], 4, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 5)))[0], 5, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 6)))[0], 6, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 7)))[0], 7, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 8)))[0], 8, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 11)))[0], 11, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 12)))[0], 12, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 13)))[0], 13, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 14)))[0], 14, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 15)))[0], 15, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 16)))[0], 16, true);
+                datalist.AddReadBlockData(parse(nfc.transceive(readWithoutEncryption(TargetIDm, size, targetServiceCode, 17)))[0], 17, true);
+                byte[] req = readWithoutEncryption(TargetIDm, size, targetServiceCode, 18);
+                byte[] res = nfc.transceive(req);
+                datalist.AddReadBlockData(parse(res)[0], 18, true);
+                LogHour.clear();
+                for (block = 19; block <= 109; block++) {
+                    req = readWithoutEncryption(TargetIDm, size, targetServiceCode, block);
+                    res = nfc.transceive(req);
+                    LogHour.add(parse(res)[0]);
+                }
+                LogDay.clear();
+                for (block = 110; block <= FelicaBlock.LogDay_Block_End; block++) {
+                    req = readWithoutEncryption(TargetIDm, size, targetServiceCode, block);
+                    res = nfc.transceive(req);
+                    LogDay.add(parse(res)[0]);
+                }
+                readCardArgument.VersionNo = String.valueOf(GetVersionNo(datalist.GetReadBlockData(0)));
+
+                readCardArgument.CardStatus = String.valueOf(GetCardStatus(datalist.GetReadBlockData(3)));
+                readCardArgument.CardIdm = _cardIdm;
+                readCardArgument.CustomerId = String.valueOf(GetCustomerId(datalist.GetReadBlockData(1), datalist.GetReadBlockData(2)));
+
+
+                readCardArgument.CardGroup = String.valueOf(GetCardGroup(datalist.GetReadBlockData(2)));
+                readCardArgument.Credit = String.valueOf(GetCredit(datalist.GetReadBlockData(3)));
+                readCardArgument.Unit = String.valueOf(GetUnit(datalist.GetReadBlockData(3)));
+                readCardArgument.BasicFee = String.valueOf(GetBasicFee(datalist.GetReadBlockData(3)));
+                readCardArgument.Refund1 = String.valueOf(GetRefund1(datalist.GetReadBlockData(4)));
+                readCardArgument.Refund2 = String.valueOf(GetRefund2(datalist.GetReadBlockData(4)));
+                readCardArgument.UntreatedFee = String.valueOf(GetUntreatedFee(datalist.GetReadBlockData(4)));
+                readCardArgument.ConfigData.IndexValue = String.valueOf(GetIndexValue(datalist.GetReadBlockData(5)));
+                readCardArgument.CardHistoryNo = String.valueOf(GetCardHistoryNo(datalist.GetReadBlockData(5)));
+                readCardArgument.ErrorNo = String.valueOf(GetErrorNo(datalist.GetReadBlockData(5)));
+                readCardArgument.ConfigData.LogDays = String.valueOf(GetLogDays(datalist.GetReadBlockData(5)));
+                CngModel tempCngModel = GetCng(datalist.GetReadBlockData(5));
+                readCardArgument.ConfigData.LogDaysFlg = String.valueOf(tempCngModel.LogDaysFlg);
+                readCardArgument.ConfigData.IndexValueFlg = String.valueOf(tempCngModel.IndexValueFlg);
+                readCardArgument.ConfigData.WeekControlFlg = String.valueOf(tempCngModel.WeekControlFlg);
+                readCardArgument.ConfigData.WeekStartFlg = String.valueOf(tempCngModel.WeekStartFlg);
+                readCardArgument.ConfigData.ClockTimeFlg = String.valueOf(tempCngModel.ClockTimeFlg);
+                readCardArgument.ConfigData.LogCountFlg = String.valueOf(tempCngModel.LogCountFlg);
+                readCardArgument.ConfigData.LogIntervalFlg = String.valueOf(tempCngModel.LogIntervalFlg);
+                readCardArgument.ConfigData.OpenCockFlg = String.valueOf(tempCngModel.OpenCockFlg);
+                readCardArgument.ConfigData.MaxFlowFlg = String.valueOf(tempCngModel.MaxFlowFlg);
+                readCardArgument.ConfigData.ContinueFlg2 = String.valueOf(tempCngModel.ContinueFlg2);
+                readCardArgument.ConfigData.ContinueFlg1 = String.valueOf(tempCngModel.ContinueFlg1);
+                ContinueModel tempContinueModel = GetContinue1(datalist.GetReadBlockData(6));
+                readCardArgument.ConfigData.ContinueValue1 = String.valueOf(tempContinueModel.ContinueValue);
+                readCardArgument.ConfigData.ContinueTime1 = String.valueOf(tempContinueModel.ContinueTime);
+                readCardArgument.ConfigData.ContinueFlg1 = String.valueOf(tempContinueModel.ContinueFlg);
+                readCardArgument.ConfigData.ContinueCon1 = String.valueOf(tempContinueModel.ContinueCon);
+                tempContinueModel = GetContinue2(datalist.GetReadBlockData(6));
+                readCardArgument.ConfigData.ContinueValue2 = String.valueOf(tempContinueModel.ContinueValue);
+                readCardArgument.ConfigData.ContinueTime2 = String.valueOf(tempContinueModel.ContinueTime);
+                readCardArgument.ConfigData.ContinueFlg2 = String.valueOf(tempContinueModel.ContinueFlg);
+                readCardArgument.ConfigData.ContinueCon2 = String.valueOf(tempContinueModel.ContinueCon);
+                MaxFlowModel tempMaxFlowModel = GetMaxFlow(datalist.GetReadBlockData(6));
+                readCardArgument.ConfigData.MaxFlowValue = String.valueOf(tempMaxFlowModel.MaxFlowValue);
+                readCardArgument.ConfigData.MaxFlowFlg = String.valueOf(tempMaxFlowModel.MaxFlowFlg);
+                readCardArgument.ConfigData.MaxFlowCon = String.valueOf(tempMaxFlowModel.MaxFlowCon);
+                OpenCockModel tempOpenCockModel = GetOpenCock(datalist.GetReadBlockData(6));
+                readCardArgument.ConfigData.OpenCockFlg = String.valueOf(tempOpenCockModel.OpenCockFlg);
+                readCardArgument.ConfigData.OpenCockCon = String.valueOf(tempOpenCockModel.OpenCockCon);
+                readCardArgument.ConfigData.LogInterval = String.valueOf(GetLogInterval(datalist.GetReadBlockData(6)));
+                readCardArgument.ConfigData.LogCount = String.valueOf(GetLogCount(datalist.GetReadBlockData(6)));
+                readCardArgument.OpenCount = String.valueOf(GetOpenCount(datalist.GetReadBlockData(7)));
+                ClockTimeModel tempClockTimeModel = GetClockTime(datalist.GetReadBlockData(7));
+                readCardArgument.ConfigData.ClockTime = GetWebApiDate(tempClockTimeModel.ClockTime);
+                readCardArgument.ConfigData.ClockTimeFlg = String.valueOf(tempClockTimeModel.ClockTimeFlg);
+                readCardArgument.LidTime = GetWebApiDate(GetLidTime(datalist.GetReadBlockData(7)));
+                readCardArgument.ConfigData.WeekStart = String.valueOf(GetWeekStart(datalist.GetReadBlockData(7)));
+                readCardArgument.ConfigData.WeekControl = String.valueOf(GetWeekControl(datalist.GetReadBlockData(7)));
+                Cng2Model tempCng2Model = GetCng2(datalist.GetReadBlockData(8));
+                readCardArgument.ConfigData.FlowDetectionFlg = String.valueOf(tempCng2Model.FlowDetectionFlg);
+                readCardArgument.ConfigData.QuakeConFlg = String.valueOf(tempCng2Model.QuakeConFlg);
+                readCardArgument.ConfigData.ReductionConFlg = String.valueOf(tempCng2Model.ReductionConFlg);
+                readCardArgument.ConfigData.OpenCoverConFlg = String.valueOf(tempCng2Model.OpenCoverConFlg);
+                readCardArgument.ConfigData.EmergencyValueFlg = String.valueOf(tempCng2Model.EmergencyValueFlg);
+                readCardArgument.ConfigData.EmergencyConFlg = String.valueOf(tempCng2Model.EmergencyConFlg);
+                ParModel tempParModel = GetPar(datalist.GetReadBlockData(8));
+                readCardArgument.ConfigData.QuakeCon = String.valueOf(tempParModel.QuakeCon);
+                readCardArgument.ConfigData.OpenCoverCon = String.valueOf(tempParModel.OpenCoverCon);
+                readCardArgument.ConfigData.FlowDetection = String.valueOf(tempParModel.FlowDetection);
+                readCardArgument.ConfigData.EmergencyCon = String.valueOf(tempParModel.EmergencyCon);
+                readCardArgument.ConfigData.ReductionCon = String.valueOf(tempParModel.ReductionCon);
+                CntModel tempCntModel = GetCnt(datalist.GetReadBlockData(8));
+                readCardArgument.ConfigData.RemoteValveCon = String.valueOf(tempCntModel.RemoteValueCon);
+                readCardArgument.ConfigData.SleepModeFlg = String.valueOf(tempCntModel.SleepModeFlg);
+                readCardArgument.ConfigData.EmergencyValue = String.valueOf(GetEmergencyValue(datalist.GetReadBlockData(8)));
+                GMA_CARD_HISTORY tempCardHis = GetCardHistory1(datalist.GetReadBlockData(11));
+                WebApi.getClass();
+                HttpResponsAsync.ReadCardArgumentCardHistory WebApiCardHis2 = new HttpResponsAsync.ReadCardArgumentCardHistory();
+                WebApiCardHis2.HistoryTime = GetWebApiDate(tempCardHis.HistoryTime);
+                WebApiCardHis2.HistoryType = String.valueOf(tempCardHis.HistoryType);
+                readCardArgument.CardHistory.add(WebApiCardHis2);
+                tempCardHis = GetCardHistory2(datalist.GetReadBlockData(11));
+                WebApi.getClass();
+                WebApiCardHis2 = new HttpResponsAsync.ReadCardArgumentCardHistory();
+                WebApiCardHis2.HistoryTime = GetWebApiDate(tempCardHis.HistoryTime);
+                WebApiCardHis2.HistoryType = String.valueOf(tempCardHis.HistoryType);
+                readCardArgument.CardHistory.add(WebApiCardHis2);
+                tempCardHis = GetCardHistory3(datalist.GetReadBlockData(12));
+                WebApi.getClass();
+                WebApiCardHis2 = new HttpResponsAsync.ReadCardArgumentCardHistory();
+                WebApiCardHis2.HistoryTime = GetWebApiDate(tempCardHis.HistoryTime);
+                WebApiCardHis2.HistoryType = String.valueOf(tempCardHis.HistoryType);
+                readCardArgument.CardHistory.add(WebApiCardHis2);
+                tempCardHis = GetCardHistory4(datalist.GetReadBlockData(12));
+                WebApi.getClass();
+                WebApiCardHis2 = new HttpResponsAsync.ReadCardArgumentCardHistory();
+                WebApiCardHis2.HistoryTime = GetWebApiDate(tempCardHis.HistoryTime);
+                WebApiCardHis2.HistoryType = String.valueOf(tempCardHis.HistoryType);
+                readCardArgument.CardHistory.add(WebApiCardHis2);
+                tempCardHis = GetCardHistory5(datalist.GetReadBlockData(13));
+                WebApi.getClass();
+                WebApiCardHis2 = new HttpResponsAsync.ReadCardArgumentCardHistory();
+                WebApiCardHis2.HistoryTime = GetWebApiDate(tempCardHis.HistoryTime);
+                WebApiCardHis2.HistoryType = String.valueOf(tempCardHis.HistoryType);
+                readCardArgument.CardHistory.add(WebApiCardHis2);
+                GMA_ERROR_HISTORY tempErrorHis = GetErrorHistory1(datalist.GetReadBlockData(14));
+                WebApi.getClass();
+                HttpResponsAsync.ReadCardArgumentErrorHistory WebApiErrorHis = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis.ErrorGroup = String.valueOf(tempErrorHis.ErrorGroup);
+                WebApiErrorHis.ErrorTime = GetWebApiDate(tempErrorHis.ErrorTime);
+                WebApiErrorHis.ErrorType = String.valueOf(tempErrorHis.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis);
+                GMA_ERROR_HISTORY tempErrorHis2 = GetErrorHistory2(datalist.GetReadBlockData(14));
+                WebApi.getClass();
+                HttpResponsAsync.ReadCardArgumentErrorHistory WebApiErrorHis2 = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis2.ErrorGroup = String.valueOf(tempErrorHis2.ErrorGroup);
+                WebApiErrorHis2.ErrorTime = GetWebApiDate(tempErrorHis2.ErrorTime);
+                WebApiErrorHis2.ErrorType = String.valueOf(tempErrorHis2.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis2);
+                tempErrorHis2 = GetErrorHistory3(datalist.GetReadBlockData(15));
+                WebApi.getClass();
+                WebApiErrorHis2 = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis2.ErrorGroup = String.valueOf(tempErrorHis2.ErrorGroup);
+                WebApiErrorHis2.ErrorTime = GetWebApiDate(tempErrorHis2.ErrorTime);
+                WebApiErrorHis2.ErrorType = String.valueOf(tempErrorHis2.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis2);
+                tempErrorHis2 = GetErrorHistory4(datalist.GetReadBlockData(15));
+                WebApi.getClass();
+                WebApiErrorHis2 = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis2.ErrorGroup = String.valueOf(tempErrorHis2.ErrorGroup);
+                WebApiErrorHis2.ErrorTime = GetWebApiDate(tempErrorHis2.ErrorTime);
+                WebApiErrorHis2.ErrorType = String.valueOf(tempErrorHis2.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis2);
+                tempErrorHis2 = GetErrorHistory5(datalist.GetReadBlockData(16));
+                WebApi.getClass();
+                WebApiErrorHis2 = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis2.ErrorGroup = String.valueOf(tempErrorHis2.ErrorGroup);
+                WebApiErrorHis2.ErrorTime = GetWebApiDate(tempErrorHis2.ErrorTime);
+                WebApiErrorHis2.ErrorType = String.valueOf(tempErrorHis2.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis2);
+                tempErrorHis2 = GetErrorHistory6(datalist.GetReadBlockData(16));
+                WebApi.getClass();
+                WebApiErrorHis2 = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis2.ErrorGroup = String.valueOf(tempErrorHis2.ErrorGroup);
+                WebApiErrorHis2.ErrorTime = GetWebApiDate(tempErrorHis2.ErrorTime);
+                WebApiErrorHis2.ErrorType = String.valueOf(tempErrorHis2.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis2);
+                tempErrorHis2 = GetErrorHistory7(datalist.GetReadBlockData(17));
+                WebApi.getClass();
+                WebApiErrorHis2 = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis2.ErrorGroup = String.valueOf(tempErrorHis2.ErrorGroup);
+                WebApiErrorHis2.ErrorTime = GetWebApiDate(tempErrorHis2.ErrorTime);
+                WebApiErrorHis2.ErrorType = String.valueOf(tempErrorHis2.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis2);
+                tempErrorHis2 = GetErrorHistory8(datalist.GetReadBlockData(17));
+                WebApi.getClass();
+                WebApiErrorHis2 = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis2.ErrorGroup = String.valueOf(tempErrorHis2.ErrorGroup);
+                WebApiErrorHis2.ErrorTime = GetWebApiDate(tempErrorHis2.ErrorTime);
+                WebApiErrorHis2.ErrorType = String.valueOf(tempErrorHis2.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis2);
+                tempErrorHis2 = GetErrorHistory9(datalist.GetReadBlockData(18));
+                WebApi.getClass();
+                WebApiErrorHis2 = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis2.ErrorGroup = String.valueOf(tempErrorHis2.ErrorGroup);
+                WebApiErrorHis2.ErrorTime = GetWebApiDate(tempErrorHis2.ErrorTime);
+                WebApiErrorHis2.ErrorType = String.valueOf(tempErrorHis2.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis2);
+                tempErrorHis2 = GetErrorHistory10(datalist.GetReadBlockData(18));
+                WebApi.getClass();
+                WebApiErrorHis2 = new HttpResponsAsync.ReadCardArgumentErrorHistory();
+                WebApiErrorHis2.ErrorGroup = String.valueOf(tempErrorHis2.ErrorGroup);
+                WebApiErrorHis2.ErrorTime = GetWebApiDate(tempErrorHis2.ErrorTime);
+                WebApiErrorHis2.ErrorType = String.valueOf(tempErrorHis2.ErrorType);
+                readCardArgument.ErrorHistory.add(WebApiErrorHis2);
+                GMA_LOG_DATA[] tempLogData = GetLogHour();
+                int i2 = 0;
+                while (true) {
+                    GMA_ERROR_HISTORY tempErrorHis3 = tempErrorHis2;
+                    GMA_CARD_HISTORY tempCardHis2 = tempCardHis;
+                    i = i2;
+                    if (i >= tempLogData.length) {
+                        break;
+                    }
+                    WebApi.getClass();
+                    HttpResponsAsync.ReadCardArgumentLogHour param = new HttpResponsAsync.ReadCardArgumentLogHour();
+                    BlockDataList datalist2 = datalist;
+                    param.GasTime = GetWebApiDate(tempLogData[i].GasTime);
+                    WebApiCardHis = WebApiCardHis2;
+                    param.GasValue = String.valueOf(tempLogData[i].GasValue);
+                    readCardArgument.LogHour.add(param);
+                    i2 = i + 1;
+                    tempErrorHis2 = tempErrorHis3;
+                    tempCardHis = tempCardHis2;
+                    datalist = datalist2;
+                    WebApiCardHis2 = WebApiCardHis;
+                }
+                WebApiCardHis = WebApiCardHis2;
+                GMA_LOG_DATA[] tempLogData2 = GetLogDay();
+                i = 0;
+                while (i < tempLogData2.length) {
+                    WebApi.getClass();
+                    HttpResponsAsync.ReadCardArgumentLogDay param2 = new HttpResponsAsync.ReadCardArgumentLogDay();
+                    param2.GasTime = GetWebApiDate(tempLogData2[i].GasTime);
+                    param2.GasValue = String.valueOf(tempLogData2[i].GasValue);
+                    readCardArgument.LogDay.add(param2);
+                    i++;
+                   
+                    httpResponsAsync = WebApi;
+                }
+                if (nfc != null) {
+                    try {
+                        nfc.close();
+                    } catch (IOException e) {
+                        //LogUtil.i(e.toString());
+                    }
+                }
+                ReturnLocale();
+
+
+                return true;
+            }
+            if (nfc != null) {
+                try {
+                    nfc.close();
+                } catch (IOException e2) {
+                    //LogUtil.i(e2.toString());
+                }
+            }
+            ReturnLocale();
+            return false;
+        } catch (Exception e3) {
+            if (nfc != null) {
+                try {
+                    nfc.close();
+                } catch (IOException e22) {
+                    //LogUtil.i(e22.toString());
+                }
+            }
+            ReturnLocale();
+            return false;
+        } catch (Throwable th) {
+            Throwable th2 = th;
+            if (nfc != null) {
+                try {
+                    nfc.close();
+                } catch (IOException e222) {
+                    //LogUtil.i(e222.toString());
+                }
+            }
+            ReturnLocale();
+            return false;
+        }
+
+
+        
+
+        
+    }
+
+    
+
+    private int GetByteToHexInt(byte[] getData, IsEncryption enc, int start, int length) {
+        byte[] _data = getData;
+        if (_data.length != 16) {
+            throw new RuntimeException("Failed to read.");
+        }
+        int end = (start + length) - 1;
+        String _val = "";
+        for (int i = start; i <= end; i++) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(_val);
+            stringBuilder.append(PadLeft(Integer.toHexString(Decryption(enc, _data[i])), 2, '0'));
+            _val = stringBuilder.toString();
+        }
+        return hex2int(_val);
+    }
+
+    private MaxFlowModel GetMaxFlow(byte[] getData) {
+        MaxFlowModel Result = new MaxFlowModel();
+        String _s = GetByteToBitString(getData, IsEncryption.Encrypt, 10, 2);
+        Result.MaxFlowValue = bin2int(_s.substring(0, 8));
+        Result.MaxFlowFlg = Integer.parseInt(_s.substring(13, 14));
+        Result.MaxFlowCon = bin2int(_s.substring(14, 16));
+        return Result;
+    }
+
+    private int GetLogDays(byte[] getData) {
+        int num = GetByteToHexInt(getData, IsEncryption.Encrypt, 12, 2);
+        if (num <= 368) {
+            return num;
+        }
+        throw new RuntimeException("LogDays");
+    }
+
+    private OpenCockModel GetOpenCock(byte[] getData) {
+        OpenCockModel Result = new OpenCockModel();
+        String _s = GetByteToBitString(getData,IsEncryption.Encrypt, 12, 1);
+        Result.OpenCockFlg = Integer.parseInt(_s.substring(5, 6));
+        Result.OpenCockCon = bin2int(_s.substring(6, 8));
+        return Result;
+    }
+
+    private int GetLogInterval(byte[] getData) {
+        return bin2int(GetByteToBitString(getData, IsEncryption.Encrypt, 13, 1));
+    }
+
+    private int GetLogCount(byte[] getData) {
+        int Result = bin2int(GetByteToBitString(getData, IsEncryption.Encrypt, 14, 2));
+        if (Result <= DateTimeConstants.MINUTES_PER_DAY) {
+            return Result;
+        }
+        throw new RuntimeException("LogCount");
+    }
+
+    private ClockTimeModel GetClockTime(byte[] getData) {
+        ClockTimeModel Result = new ClockTimeModel();
+        String _ymd = String.format("%010d", new Object[]{BCDToLong(GetByteToBitString(getData, IsEncryption.Encrypt, 3, 6).substring(0, 40))});
+        if (_ymd.equals("0000000000")) {
+            Calendar cal = Calendar.getInstance();
+            cal.clear();
+            Result.ClockTime = cal;
+        } else {
+            try {
+                Result.ClockTime.setTime(new SimpleDateFormat("yyMMddHHmm").parse(_ymd));
+            } catch (ParseException e) {
+                throw new RuntimeException("ClockTimeFlg");
+            }
+        }
+//        Result.ClockTimeFlg = Integer.parseInt(_s.substring(47, 48));
+//        SimpleDateFormat sdFormat = new byte[2];
+        return Result;
+    }
+
+    private int GetWeekStart(byte[] getData) {
+        return hex2int(GetByteToHexString(getData, IsEncryption.Encrypt, 14, 1));
+    }
+
+    private int GetWeekControl(byte[] getData) {
+        int i = 1;
+        String _s = GetByteToHexString(getData, IsEncryption.Encrypt, 15, 1);
+        int hashCode = _s.hashCode();
+        if (hashCode != 1536) {
+            if (hashCode == 2218) {
+            }
+        } else if (_s.equals("00")) {
+            i = 0;
+            switch (i) {
+                case 0:
+                case 1:
+                    return hex2int(_s);
+                default:
+                    throw new RuntimeException("WeekControl");
+            }
+        }
+        i = -1;
+        switch (i) {
+            case 0:
+            case 1:
+                break;
+            default:
+                break;
+        }
+        return i;
+    }
+
+    private CntModel GetCnt(byte[] getData) {
+        CntModel Result = new CntModel();
+        String _s = GetByteToBitString(getData, IsEncryption.Encrypt, 2, 1);
+        Result.RemoteValueCon = bin2int(_s.substring(0, 2));
+        switch (Result.RemoteValueCon) {
+            case 0:
+            case 1:
+            case 2:
+                Result.SleepModeFlg = bin2int(_s.substring(3, 4));
+                return Result;
+            default:
+                throw new RuntimeException("RemoteValueCon");
+        }
+    }
+
+    private GMA_CARD_HISTORY GetCardHistory1(byte[] getData) {
+        return GetCardHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 0, 6));
+    }
+
+    private GMA_CARD_HISTORY GetCardHistory2(byte[] getData) {
+        return GetCardHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 8, 6));
+    }
+
+    private GMA_CARD_HISTORY GetCardHistory3(byte[] getData) {
+        return GetCardHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 0, 6));
+    }
+
+    private GMA_CARD_HISTORY GetCardHistory4(byte[] getData) {
+        return GetCardHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 8, 6));
+    }
+
+    private GMA_CARD_HISTORY GetCardHistory5(byte[] getData) {
+        return GetCardHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 0, 6));
+    }
+
+    private GMA_CARD_HISTORY GetCardHistory(String _s) {
+        GMA_CARD_HISTORY Result = new GMA_CARD_HISTORY();
+        String _ymd = String.format("%010d", new Object[]{BCDToLong(_s.substring(0, 40))});
+        if (_ymd.equals("0000000000")) {
+            Result.HistoryTime.clear();
+        } else {
+            try {
+                Result.HistoryTime.setTime(new SimpleDateFormat("yyMMddHHmm").parse(_ymd));
+            } catch (ParseException e) {
+                throw new RuntimeException("GetCardHistory1");
+            }
+        }
+        Result.HistoryType = bin2int(_s.substring(46, 48));
+        return Result;
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory1(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 0, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory2(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 8, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory3(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 0, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory4(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 8, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory5(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 0, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory6(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 8, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory7(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 0, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory8(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 8, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory9(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 0, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory10(byte[] getData) {
+        return GetErrorHistory(GetByteToBitString(getData, IsEncryption.NotEncrypt, 8, 8));
+    }
+
+    private GMA_ERROR_HISTORY GetErrorHistory(String _s) {
+        GMA_ERROR_HISTORY Result = new GMA_ERROR_HISTORY();
+        String _ymd = String.format("%010d", new Object[]{BCDToLong(_s.substring(0, 40))});
+        if (_ymd.equals("0000000000")) {
+            Result.ErrorTime.clear();
+        } else {
+            try {
+                Result.ErrorTime.setTime(new SimpleDateFormat("yyMMddHHmm").parse(_ymd));
+            } catch (ParseException e) {
+                throw new RuntimeException("GetCardHistory1");
+            }
+        }
+        Result.ErrorGroup = bin2int(_s.substring(46, 48));
+        try {
+            Result.ErrorType = new String(new byte[]{(byte) bin2int(_s.substring(48, 56)), (byte) bin2int(_s.substring(56, 64))}, "US-ASCII");
+        } catch (UnsupportedEncodingException e2) {
+            //LogUtil.e(e2);
+        }
+        return Result;
+    }
+
+    @SuppressLint("WrongConstant")
+    private GMA_LOG_DATA[] GetLogHour() {
+
+        int i = 2;
+        int _index = bin2int(GetByteToBitString((byte[]) LogHour.get(0), IsEncryption.NotEncrypt, 0, 2));
+        if (_index > 1439) {
+            throw new RuntimeException("LogHoer");
+        }
+        String str;
+        int i2;
+        int i3;
+        double _latestGasValue = ((double) BCDTo(GetByteToBitString((byte[]) LogHour.get(0), IsEncryption.NotEncrypt, 2, 4))) / 1000.0d;
+        String _s = GetByteToBitString((byte[]) LogHour.get(0), IsEncryption.NotEncrypt, 6, 5);
+        Long _n = BCDToLong(_s.substring(0, 40));
+        Boolean bLastDay = Boolean.valueOf(true);
+        String _ymd = String.format("%010d", new Object[]{_n});
+        Calendar _latestGasTime = Calendar.getInstance();
+        if (_ymd.equals("0000000000")) {
+            bLastDay = Boolean.valueOf(false);
+        } else {
+            try {
+                _latestGasTime.setTime(new SimpleDateFormat("yyMMddHHmm").parse(_ymd));
+            } catch (ParseException e) {
+                str = _s;
+                i2 = _index;
+                throw new RuntimeException("GasTime");
+            }
+        }
+        ArrayList sdFormat = new ArrayList();
+        int _col = 0;
+        int _row = 1;
+        int i4 = 0;
+        while (true) {
+            i3 = DateTimeConstants.MINUTES_PER_DAY;
+            if (i4 >= DateTimeConstants.MINUTES_PER_DAY) {
+                break;
+            }
+            sdFormat.add(Integer.valueOf(hex2int(PadLeft(String.valueOf(((byte[]) LogHour.get(_row))[_col]), i, '0'))));
+            i = _col + 1;
+            if (i > 15) {
+                _row++;
+                _col = 0;
+            } else {
+                _col = i;
+            }
+            i4++;
+            i = 2;
+        }
+        ArrayList<Integer> _sortedList = new ArrayList();
+        for (i = _index; i >= 0; i--) {
+            _sortedList.add((Integer) sdFormat.get(i));
+        }
+        int i5 = 1439;
+        while (true) {
+            i = i5;
+            if (i <= _index) {
+                break;
+            }
+            _sortedList.add((Integer) sdFormat.get(i));
+            i5 = i - 1;
+        }
+        GMA_LOG_DATA[] _log = new GMA_LOG_DATA[DateTimeConstants.MINUTES_PER_DAY];
+        Calendar _gasTime = Calendar.getInstance();
+        double _gasValue = 0.0d;
+        if (bLastDay.booleanValue()) {
+            _gasTime = _latestGasTime;
+            _gasValue = _latestGasValue;
+        }
+        int i6 = 0;
+        while (true) {
+            i4 = i6;
+            if (i4 < i3) {
+                ArrayList<Integer> _list;
+                _log[i4] = new GMA_LOG_DATA();
+                if (bLastDay.booleanValue()) {
+                    str = _s;
+                    _list = sdFormat;
+                    _log[i4].GasTime = (Calendar) _gasTime.clone();
+                    if (i4 > 0) {
+                        i2 = _index;
+                        _log[i4].GasValue = _gasValue - ((((double) ((Integer) _sortedList.get(i4 - 1)).intValue()) * 20.0d) / 1000.0d);
+//                        _log[i4].GasValue = sdFormat;
+                    } else {
+                        i2 = _index;
+                        _log[i4].GasValue = _gasValue;
+                    }
+//                    _log[i4].GasValue = sdFormat;
+                    _gasTime.add(10, -1);
+//                    _gasValue = sdFormat;
+                } else {
+                    _log[i4].GasTime.clear();
+                    str = _s;
+                    _list = sdFormat;
+                    _log[i4].GasValue = Double.parseDouble(null);
+                    i2 = _index;
+                }
+                i6 = i4 + 1;
+                _s = str;
+                Object sdFormat2 = _list;
+                _index = i2;
+                i3 = DateTimeConstants.MINUTES_PER_DAY;
+            } else {
+//                SimpleDateFormat simpleDateFormat = sdFormat2;
+                i2 = _index;
+                return _log;
+            }
+        }
+    }
+
+    @SuppressLint("WrongConstant")
+    private GMA_LOG_DATA[] GetLogDay() {
+        int i = 2;
+        int _index = bin2int(GetByteToBitString((byte[]) LogDay.get(0), IsEncryption.NotEncrypt, 0, 2));
+        if (_index > 367) {
+            throw new RuntimeException("LogDay");
+        }
+        String str;
+        int i2;
+        int i3;
+        double _latestGasValue = ((double) BCDTo(GetByteToBitString((byte[]) LogDay.get(0), IsEncryption.NotEncrypt, 2, 4))) / 1000.0d;
+        String _s = GetByteToBitString((byte[]) LogDay.get(0), IsEncryption.NotEncrypt, 6, 5);
+        Long _n = BCDToLong(_s.substring(0, 40));
+        Boolean bLastDay = Boolean.valueOf(true);
+        String _ymd = String.format("%010d", new Object[]{_n});
+        Calendar _latestGasTime = Calendar.getInstance();
+        if (_ymd.equals("0000000000")) {
+            bLastDay = Boolean.valueOf(false);
+        } else {
+            try {
+                _latestGasTime.setTime(new SimpleDateFormat("yyMMddHHmm").parse(_ymd));
+            } catch (ParseException e) {
+                str = _s;
+                i2 = _index;
+                throw new RuntimeException("GasTime");
+            }
+        }
+        ArrayList sdFormat = new ArrayList();
+        int _col = 0;
+        int _row = 1;
+        int i4 = 0;
+        while (true) {
+            i3 = 368;
+            if (i4 >= 368) {
+                break;
+            }
+            sdFormat.add(Integer.valueOf(hex2int(PadLeft(String.valueOf(((byte[]) LogDay.get(_row))[_col]), i, '0'))));
+            i = _col + 1;
+            if (i > 15) {
+                _row++;
+                _col = 0;
+            } else {
+                _col = i;
+            }
+            i4++;
+            i = 2;
+        }
+        ArrayList<Integer> _sortedList = new ArrayList();
+        for (i = _index; i >= 0; i--) {
+            _sortedList.add((Integer) sdFormat.get(i));
+        }
+        int i5 = 367;
+        while (true) {
+            i = i5;
+            if (i <= _index) {
+                break;
+            }
+            _sortedList.add((Integer) sdFormat.get(i));
+            i5 = i - 1;
+        }
+        GMA_LOG_DATA[] _log = new GMA_LOG_DATA[368];
+        Calendar _gasTime = Calendar.getInstance();
+        double _gasValue = 0.0d;
+        if (bLastDay.booleanValue()) {
+            _gasTime = _latestGasTime;
+            _gasValue = _latestGasValue;
+        }
+        int i6 = 0;
+        while (true) {
+            int i7 = i6;
+            if (i7 < i3) {
+                ArrayList<Integer> _list;
+                _log[i7] = new GMA_LOG_DATA();
+                if (bLastDay.booleanValue()) {
+                    str = _s;
+                    _list = sdFormat;
+                    _log[i7].GasTime = (Calendar) _gasTime.clone();
+                    if (i7 > 0) {
+                        i2 = _index;
+                        _log[i7].GasValue = _gasValue - ((((double) ((Integer) _sortedList.get(i7 - 1)).intValue()) * 100.0d) / 1000.0d);
+                    } else {
+                        i2 = _index;
+                        _log[i7].GasValue = _gasValue;
+                    }
+//                    _log[i7].GasValue = sdFormat;
+                    _gasTime.add(5, -1);
+//                    _gasValue = sdFormat;
+                } else {
+                    _log[i7].GasTime.clear();
+                    str = _s;
+                    _list = sdFormat;
+//                    _log[i7].GasValue = null;
+                    i2 = _index;
+                }
+                i6 = i7 + 1;
+                _s = str;
+                Object sdFormat2 = _list;
+                _index = i2;
+                i3 = 368;
+            } else {
+//                SimpleDateFormat simpleDateFormat = sdFormat2;
+                i2 = _index;
+                return _log;
+            }
+        }
+    }
+
+    public static int hex2decimal(String s) {
+        String digits = "0123456789ABCDEF";
+        s = s.toUpperCase();
+        int val = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            int d = digits.indexOf(c);
+            val = 16*val + d;
+        }
+        return val;
+    }
+
+
+
+    
 
 
 }
