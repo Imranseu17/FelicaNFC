@@ -2,8 +2,10 @@ package com.example.root.officeapp;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -70,7 +72,7 @@ public class ReadCard extends AppCompatActivity {
     private String[][] techListsArray;
     private NfcAdapter mAdapter;
     private PendingIntent pendingIntent;
-    TextView textdata;
+    TextView textdata,errorText;
     ImageView imageView;
     TextView textView;
     Tag tag;
@@ -97,9 +99,10 @@ public class ReadCard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.readcard);
         textdata = findViewById(R.id.textdata);
+        errorText = findViewById(R.id.texterror);
         imageView = findViewById(R.id.nfcImage);
         textView = findViewById(R.id.nfcText);
-        cardHistoryListView = findViewById(R.id.cardHistory);
+       cardHistoryListView = findViewById(R.id.cardHistory);
         cardErrorList = findViewById(R.id.cardErrorList);
         setTitle(" Read Card ");
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
@@ -164,15 +167,15 @@ public class ReadCard extends AppCompatActivity {
             return;
         }
 
-       ReadTag(tag);
+        ReadTag(tag);
 
-       boolean response = GasChargeCard(tag,10.99,0,0,9, "10003419");
+        boolean response = GasChargeCard(tag,10.99,0,0,9, "10003419");
 
-       if(response){
-           WriteStatus(tag,historyNO+1);
-       }
+        if(response){
+            WriteStatus(tag,historyNO+1);
+        }
 
-      boolean data =   SetReadCardData(tag,webAPI,readCardArgument);
+        boolean data =   SetReadCardData(tag,webAPI,readCardArgument);
 
 
         for (int i2 = 0; i2 < readCardArgument.CardHistory.size(); i2++) {
@@ -201,6 +204,8 @@ public class ReadCard extends AppCompatActivity {
 
         cardHistoryListView.setAdapter(historyListAdapter);
 
+        errorText.setText("*************  Error List  *************");
+
         CardErrorListAdapter cardErrorListAdapter = new CardErrorListAdapter(
                 this,errorListData
         );
@@ -214,26 +219,32 @@ public class ReadCard extends AppCompatActivity {
 
 
 
-       if(data){
+        if(data){
 
-           textdata.setText("*************  Card Properties  *************"+"\n"+"\n"+
-                   "Version NO:"+readCardArgument.VersionNo+"\n"+
-                   "Card Status: "+  Integer.toHexString(Integer.parseInt(readCardArgument.CardStatus)) +"\n"
-                   +"Card ID: "+ readCardArgument.CardIdm
-                   +"\n"+"Customer ID: "+readCardArgument.CustomerId
-                   +"\n"+"Card Group: "+ Integer.toHexString(Integer.parseInt(readCardArgument.CardGroup))
-                   +"\n"+"Credit: "+readCardArgument.Credit
-                   +"\n"+"Unit: "+readCardArgument.Unit
-                   +"\n"+"Basic Fee: "+readCardArgument.BasicFee
-                   +"\n"+"Refund1: "+readCardArgument.Refund1
-                   +"\n"+"Refund2: "+readCardArgument.Refund2
-                   +"\n"+"Untreated Fee: "+readCardArgument.UntreatedFee
-                   +"\n"+"Card History NO: "+readCardArgument.CardHistoryNo
-                   +"\n"+"Card Error NO: "+readCardArgument.ErrorNo
-                   +"\n"+"Open Count: "+readCardArgument.OpenCount
-                   +"\n"+"Lid Time: "+readCardArgument.LidTime
-                   +"\n"+"\n"+"*************  Card History  *************");
-       }
+            textdata.setText("*************  Card Properties  *************"+"\n"+
+                    "Version NO:"+readCardArgument.VersionNo+"\n"+
+                    "Card Status: "+  Integer.toHexString(Integer.parseInt(readCardArgument.CardStatus)) +"\n"
+                    +"Card ID: "+ readCardArgument.CardIdm
+                    +"\n"+"Customer ID: "+readCardArgument.CustomerId
+                    +"\n"+"Card Group: "+ Integer.toHexString(Integer.parseInt(readCardArgument.CardGroup))
+                    +"\n"+"Credit: "+readCardArgument.Credit
+                    +"\n"+"Unit: "+readCardArgument.Unit
+                    +"\n"+"Basic Fee: "+readCardArgument.BasicFee
+                    +"\n"+"Refund1: "+readCardArgument.Refund1
+                    +"\n"+"Refund2: "+readCardArgument.Refund2
+                    +"\n"+"Untreated Fee: "+readCardArgument.UntreatedFee
+                    +"\n"+"Card History NO: "+readCardArgument.CardHistoryNo
+                    +"\n"+"Card Error NO: "+readCardArgument.ErrorNo
+                    +"\n"+"Open Count: "+readCardArgument.OpenCount
+                    +"\n"+"Lid Time: "+readCardArgument.LidTime
+                    +"\n"+"*************  Card History List  *************");
+        }
+
+        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        //editor.putString("cardGroup",Integer.toHexString(Integer.parseInt(readCardArgument.CardGroup)));
+        editor.apply();
+        editor.commit();
 
 
 
@@ -409,7 +420,7 @@ public class ReadCard extends AppCompatActivity {
                 indexValue = String.valueOf(GetIndexValue(datalist.GetReadBlockData(5)));
                 LidTime = getFormatDate(lidTime);
 
-                
+
 
 
 
@@ -815,7 +826,6 @@ public class ReadCard extends AppCompatActivity {
         }
     }
 
-
     private String GetByteToBitString(byte[] getData, IsEncryption enc, int start, int length) {
         byte[] _data = getData;
         if (_data.length != 16) {
@@ -893,6 +903,7 @@ public class ReadCard extends AppCompatActivity {
     private int GetUntreatedFee(byte[] getData) {
         return GetByteToInt(getData, IsEncryption.Encrypt, 7, 4);
     }
+
 
     public boolean GasChargeCard(Tag tag, double Credit, double Unit, int BasicFee, double emergencyValue, String meter) {
         String str = meter;
@@ -1580,7 +1591,6 @@ public class ReadCard extends AppCompatActivity {
         }
     }
 
-
     private void SetEmergencyValue(byte[] setData, double emergencyValue) {
         if (ValidDouble(emergencyValue, 3, 3)) {
             byte[] bArr = setData;
@@ -2134,16 +2144,6 @@ public class ReadCard extends AppCompatActivity {
         try {
 
             nfc.connect();
-            byte []   TargetSystemCode  =   new  byte [] { ( byte )  0xfe , ( byte )  0x00 };
-
-            // create polling command
-            byte []  polling  =  polling ( nfc.getSystemCode() );
-
-            // get the result by sending a command
-            byte []  PollingRes  =  nfc . transceive ( polling );
-
-            // Get the IDm of System 0 (1 byte data size, 2 byte response code, the size of the IDm is 8 bytes)
-            TargetIDm  =  Arrays. copyOfRange ( PollingRes ,  2 ,  10 );
             String _cardIdm = GetCardIdm(TargetIDm);
             if (strCardId.equals(_cardIdm)) {
                 int block;
@@ -2386,7 +2386,7 @@ public class ReadCard extends AppCompatActivity {
                     param2.GasValue = String.valueOf(tempLogData2[i].GasValue);
                     readCardArgument.LogDay.add(param2);
                     i++;
-                   
+
                     httpResponsAsync = WebApi;
                 }
                 if (nfc != null) {
@@ -2434,12 +2434,12 @@ public class ReadCard extends AppCompatActivity {
         }
 
 
-        
 
-        
+
+
     }
 
-    
+
 
     private int GetByteToHexInt(byte[] getData, IsEncryption enc, int start, int length) {
         byte[] _data = getData;
@@ -2887,7 +2887,23 @@ public class ReadCard extends AppCompatActivity {
 
 
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

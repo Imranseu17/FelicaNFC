@@ -30,7 +30,7 @@ public class CardErrorListAdapter   extends ArrayAdapter<ErrorListData> {
         // Lookup view for data population
         TextView data = (TextView) convertView.findViewById(R.id.data);
         // Populate the data into the template view using the data object
-        data.setText(errorListData.getType()+" "+errorListData.getGroup()+" "+errorListData.getTime());
+        data.setText(errorListData.getGroup()+"      "+errorListData.getType()+"      "+errorListData.getTime());
         // Return the completed view to render on screen
         return convertView;
     }

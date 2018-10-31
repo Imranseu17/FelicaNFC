@@ -13,17 +13,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:orientation="vertical">
 
-            <Button
-                android:layout_width="250dp"
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/cardproperties_btn"
+                android:textSize="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/roundedbutton"
-                android:text="Show the Card Properties" />
+                android:textStyle="bold"
+                android:id="@+id/properties" />
 
         </LinearLayout>
 

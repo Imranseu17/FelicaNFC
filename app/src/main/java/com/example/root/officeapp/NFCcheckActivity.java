@@ -1,7 +1,9 @@
 package com.example.root.officeapp;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -255,6 +257,10 @@ public class NFCcheckActivity extends AppCompatActivity {
             String str = record.str();
             builder.append(str).append("\n");
         }
+
+        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+        String cardGroup = sharedpreferences.getString("cardGroup","");
+
 
         startActivity(new Intent(NFCcheckActivity.this, GridMenuPageActivity.class));
     }
