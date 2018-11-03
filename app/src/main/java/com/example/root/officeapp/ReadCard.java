@@ -12,6 +12,7 @@ import android.nfc.Tag;
 import android.nfc.TagLostException;
 import android.nfc.tech.NfcF;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v7.app.AppCompatActivity;
@@ -157,6 +158,7 @@ public class ReadCard extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
+
         setIntent(intent);
         imageView.clearAnimation();
         imageView.setVisibility(View.GONE);
@@ -223,10 +225,10 @@ public class ReadCard extends AppCompatActivity {
 
             textdata.setText("*************  Card Properties  *************"+"\n"+
                     "Version NO:"+readCardArgument.VersionNo+"\n"+
-                    "Card Status: "+  Integer.toHexString(Integer.parseInt(readCardArgument.CardStatus)) +"\n"
+                    "Card Status: "+  readCardArgument.CardStatus +"\n"
                     +"Card ID: "+ readCardArgument.CardIdm
                     +"\n"+"Customer ID: "+readCardArgument.CustomerId
-                    +"\n"+"Card Group: "+ Integer.toHexString(Integer.parseInt(readCardArgument.CardGroup))
+                    +"\n"+"Card Group: "+ readCardArgument.CardGroup
                     +"\n"+"Credit: "+readCardArgument.Credit
                     +"\n"+"Unit: "+readCardArgument.Unit
                     +"\n"+"Basic Fee: "+readCardArgument.BasicFee
@@ -240,79 +242,13 @@ public class ReadCard extends AppCompatActivity {
                     +"\n"+"*************  Card History List  *************");
         }
 
-        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        //editor.putString("cardGroup",Integer.toHexString(Integer.parseInt(readCardArgument.CardGroup)));
-        editor.apply();
-        editor.commit();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("tag",tag);
+        CardPropertiesFragment myObj = new CardPropertiesFragment();
+        myObj.setArguments(bundle);
 
 
-
-
-
-//        felicaTag = new FelicaTag(tag);
-//        FelicaTag.CommandPacket commandPacket = new FelicaTag.CommandPacket(tag.getId());
-//        FelicaTag.ServiceCode serviceCode = new FelicaTag.ServiceCode(tag.getId());
-//        FelicaTag.PMm pMm = new FelicaTag.PMm(tag.getId());
-//        FelicaTag.SystemCode systemCode = new FelicaTag.SystemCode(tag.getId());
-//        FeliCaLib.Block block = new FeliCaLib.Block();
-//        FeliCaLib.MemoryConfigurationBlock memoryConfigurationBlock =
-//                new FeliCaLib.MemoryConfigurationBlock(tag.getId());
-//
-//
-//        readTag(tag);
-//
-//        NfcReader nfcReader = new NfcReader();
-//        byte[][] readdata = nfcReader.ReadTag(tag);
-
-
-
-
-//        try {
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//            textdata.setText("Type: "+felicaTag.getType()+"\n"+
-//                    "IDm: "+"\n"+felicaTag.getIdm().toString()+
-//                    "Service Code List: "+"\n"+felicaTag.getServiceCodeList()+"\n"
-//                    +"Service Code: "+ serviceCode.getBytes()+"\n"+
-//                    "ID: "+felicaTag.getId()+
-//                    "\n"+"CommandPacket: "+"\n"+commandPacket.toString()
-//                    +"CommandPacket Bytes: "+"\n"+commandPacket.getBytes()
-//                    +"\n"+"PMm: "+"\n"+pMm.toString()+
-//                    "PM Bytes: "+pMm.getBytes()
-//                    +"\n"+"IDm Bytes: "+felicaTag.getIdm().getBytes()+
-//                    "\n"+""+systemCode
-//                    +"\n"+"System Code Bytes: "+systemCode.getBytes()+
-//                    "Block: "+block.getBytes()+
-//                    "\n"+"Memory Configuration: "+memoryConfigurationBlock.toString()
-//                    +"\n"+"CradGroup: "+String.valueOf(nfcReader.byCardGroup)
-//                    +"\n"+"CustomerID: "+nfcReader.strCustomerId
-//                    +"\n"+"CradStatus: "+String.valueOf(nfcReader.byCardStatus)
-//
-//
-//
-//
-//
-//
-//
-//               );
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//
 
 
     }
@@ -2183,12 +2119,13 @@ public class ReadCard extends AppCompatActivity {
                 }
                 readCardArgument.VersionNo = String.valueOf(GetVersionNo(datalist.GetReadBlockData(0)));
 
-                readCardArgument.CardStatus = String.valueOf(GetCardStatus(datalist.GetReadBlockData(3)));
+
+               readCardArgument.CardStatus  = String.format("%02X", new Object[]{Integer.valueOf
+                        (Integer.valueOf(GetCardStatus(datalist.GetReadBlockData(3))).intValue() & 255)});
                 readCardArgument.CardIdm = _cardIdm;
                 readCardArgument.CustomerId = String.valueOf(GetCustomerId(datalist.GetReadBlockData(1), datalist.GetReadBlockData(2)));
-
-
-                readCardArgument.CardGroup = String.valueOf(GetCardGroup(datalist.GetReadBlockData(2)));
+                readCardArgument.CardGroup = String.format("%02X", new Object[]{Integer.valueOf
+                        (Integer.valueOf(GetCardGroup(datalist.GetReadBlockData(2))).intValue() & 255)});
                 readCardArgument.Credit = String.valueOf(GetCredit(datalist.GetReadBlockData(3)));
                 readCardArgument.Unit = String.valueOf(GetUnit(datalist.GetReadBlockData(3)));
                 readCardArgument.BasicFee = String.valueOf(GetBasicFee(datalist.GetReadBlockData(3)));

@@ -8,6 +8,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.NfcF;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,22 +35,11 @@ public class CardPropertiesFragment extends Fragment {
     private PendingIntent pendingIntent;
 
 
-    public CardPropertiesFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_card_properties, container, false);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         cardPropeties = view.findViewById(R.id.properties);
         pendingIntent = PendingIntent.getActivity(
                 getContext(), 0, new Intent(getContext(), getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -58,64 +48,65 @@ public class CardPropertiesFragment extends Fragment {
 
         try {
             ndef.addDataType("text/plain");
-        }
-        catch (IntentFilter.MalformedMimeTypeException e) {
+        } catch (IntentFilter.MalformedMimeTypeException e) {
             throw new RuntimeException("fail", e);
         }
-        intentFiltersArray = new IntentFilter[] {ndef};
+        intentFiltersArray = new IntentFilter[]{ndef};
 
 
-        techListsArray = new String[][] {
-                new String[] { NfcF.class.getName() }
+        techListsArray = new String[][]{
+                new String[]{NfcF.class.getName()}
         };
 
 
         mAdapter = NfcAdapter.getDefaultAdapter(getActivity().getApplicationContext());
 
 
+        Tag tag = getArguments().getParcelable("tag");
 
 
-
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Tag tag  = getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        if (tag == null) {
-            return;
-        }
 
         readCard.ReadTag(tag);
-        boolean data = readCard.SetReadCardData(tag,readCard.webAPI,readCard.readCardArgument);
+        boolean data = readCard.SetReadCardData(tag, readCard.webAPI, readCard.readCardArgument);
 
-        if(data){
+        if (data) {
 
             cardPropeties.setText(
-                    "Version NO:"+readCard .readCardArgument.VersionNo+"\n"+
-                            "Card Status: "+  Integer.toHexString(Integer.parseInt(readCard . readCardArgument.CardStatus)) +"\n"
-                            +"Card ID: "+readCard . readCardArgument.CardIdm
-                            +"\n"+"Customer ID: "+readCard . readCardArgument.CustomerId
-                            +"\n"+"Card Group: "+ Integer.toHexString(Integer.parseInt(readCard . readCardArgument.CardGroup))
-                            +"\n"+"Credit: "+readCard . readCardArgument.Credit
-                            +"\n"+"Unit: "+readCard . readCardArgument.Unit
-                            +"\n"+"Basic Fee: "+readCard . readCardArgument.BasicFee
-                            +"\n"+"Refund1: "+readCard . readCardArgument.Refund1
-                            +"\n"+"Refund2: "+readCard . readCardArgument.Refund2
-                            +"\n"+"Untreated Fee: "+readCard . readCardArgument.UntreatedFee
-                            +"\n"+"Card History NO: "+readCard . readCardArgument.CardHistoryNo
-                            +"\n"+"Card Error NO: "+readCard . readCardArgument.ErrorNo
-                            +"\n"+"Open Count: "+readCard . readCardArgument.OpenCount
-                            +"\n"+"Lid Time: "+readCard . readCardArgument.LidTime
+                    "Version NO:" + readCard.readCardArgument.VersionNo + "\n" +
+                            "Card Status: " + readCard.readCardArgument.CardStatus + "\n"
+                            + "Card ID: " + readCard.readCardArgument.CardIdm
+                            + "\n" + "Customer ID: " + readCard.readCardArgument.CustomerId
+                            + "\n" + "Card Group: " + readCard.readCardArgument.CardGroup
+                            + "\n" + "Credit: " + readCard.readCardArgument.Credit
+                            + "\n" + "Unit: " + readCard.readCardArgument.Unit
+                            + "\n" + "Basic Fee: " + readCard.readCardArgument.BasicFee
+                            + "\n" + "Refund1: " + readCard.readCardArgument.Refund1
+                            + "\n" + "Refund2: " + readCard.readCardArgument.Refund2
+                            + "\n" + "Untreated Fee: " + readCard.readCardArgument.UntreatedFee
+                            + "\n" + "Card History NO: " + readCard.readCardArgument.CardHistoryNo
+                            + "\n" + "Card Error NO: " + readCard.readCardArgument.ErrorNo
+                            + "\n" + "Open Count: " + readCard.readCardArgument.OpenCount
+                            + "\n" + "Lid Time: " + readCard.readCardArgument.LidTime
             );
+
+
         }
+
+        return view;
+
+
     }
+
+
+
+
+
 
     @Override
     public void onResume() {
         super.onResume();
+
+
         mAdapter.enableForegroundDispatch(getActivity(), pendingIntent, intentFiltersArray, techListsArray);
     }
 

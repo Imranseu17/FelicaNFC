@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.root.officeapp.golobal.MainApplication;
+import com.example.root.officeapp.nfcfelica.HttpResponsAsync;
 import com.example.root.officeapp.parser.NdefMessageParser;
 import com.example.root.officeapp.record.ParsedNdefRecord;
 
@@ -32,6 +33,9 @@ public class NFCcheckActivity extends AppCompatActivity {
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
     ImageView logo;
+    Tag tag;
+    ReadCard readCard = new ReadCard();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,7 +237,7 @@ public class NFCcheckActivity extends AppCompatActivity {
             } else {
                 byte[] empty = new byte[0];
                 byte[] id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
-                Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                 tag =  intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 byte[] payload = dumpTagData(tag).getBytes();
                 NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload);
                 NdefMessage msg = new NdefMessage(new NdefRecord[]{record});
@@ -258,10 +262,23 @@ public class NFCcheckActivity extends AppCompatActivity {
             builder.append(str).append("\n");
         }
 
-        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
-        String cardGroup = sharedpreferences.getString("cardGroup","");
+            readCard.ReadTag(tag);
+            readCard.SetReadCardData(tag,readCard.webAPI,readCard.readCardArgument);
 
 
-        startActivity(new Intent(NFCcheckActivity.this, GridMenuPageActivity.class));
+            if(readCard.readCardArgument.CardGroup.equals("88")){
+                startActivity(new Intent
+                        (NFCcheckActivity.this, GridMenuPageActivity.class));
+            }
+
+            else {
+                Toast.makeText(this,"This is not Serviece Card",Toast.LENGTH_LONG).show();
+            }
+
+
+
+
+
+
     }
 }

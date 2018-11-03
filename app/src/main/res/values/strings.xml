@@ -9,7 +9,7 @@
     <string name="spinner_english_eng">English</string>
     <string name="spinner_japan_eng">Japanese</string>
     <string name="login_eng">Login</string>
-    <string name="nfccheck_eng">Hold a tag against the back of your device</string>
+    <string name="nfccheck_eng">Please tag the Service card</string>
     <string name="menu_eng">Menu</string>
     <string name="readcard_eng">Card Read</string>
     <string name="accountserch_eng">Account Search</string>
@@ -50,7 +50,7 @@
     <string name="username_ban">ব্যবহারকারীর নাম</string>
     <string name="password_ban">পাসওয়ার্ড</string>
     <string name="login_ban">লগইন</string>
-    <string name="nfccheck_ban">আপনার ডিভাইসের পিছনে একটি ট্যাগ ধরে রাখুন</string>
+    <string name="nfccheck_ban">সার্ভিস কার্ড ট্যাগ করুন</string>
     <string name="menu_ban">মেনু</string>
     <string name="readcard_ban">কার্ড পড়ুন</string>
     <string name="accountserch_ban">অ্যাকাউন্ট অনুসন্ধান</string>
@@ -94,7 +94,7 @@
     <string name="username_japan">ユーザー名</string>
     <string name="password_japan">パスワード</string>
     <string name="login_japan">ログイン</string>
-    <string name="nfccheck_japan">デバイスの裏側にタグを置く</string>
+    <string name="nfccheck_japan">サービスカードにタグを付けてください</string>
     <string name="menu_japan">メニュー</string>
     <string name="readcard_japan">カードを読む</string>
     <string name="accountserch_japan">アカウント検索</string>
