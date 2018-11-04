@@ -60,9 +60,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 
 import static com.example.root.officeapp.lang.NumberUtils.TAG;
 
@@ -93,6 +95,8 @@ public class ReadCard extends AppCompatActivity {
     ArrayList<HistoryListData> historyListData = new ArrayList();
     ArrayList<ErrorListData> errorListData = new ArrayList();
     ListView cardHistoryListView,cardErrorList;
+    int i2;
+    public  static final String nfcTag = "tag";
 
 
     @Override
@@ -180,7 +184,7 @@ public class ReadCard extends AppCompatActivity {
         boolean data =   SetReadCardData(tag,webAPI,readCardArgument);
 
 
-        for (int i2 = 0; i2 < readCardArgument.CardHistory.size(); i2++) {
+        for ( i2 = 0; i2 < readCardArgument.CardHistory.size(); i2++) {
             HistoryListData dataTemp = new HistoryListData();
             HttpResponsAsync.ReadCardArgumentCardHistory cardHistory = readCardArgument.CardHistory.get(i2);
             dataTemp.setTime(getFormatDate(cardHistory.HistoryTime));
@@ -188,7 +192,7 @@ public class ReadCard extends AppCompatActivity {
             historyListData.add(dataTemp);
         }
 
-        for (int i2 = 0; i2 < readCardArgument.ErrorHistory.size(); i2++) {
+        for ( i2 = 0; i2 < readCardArgument.ErrorHistory.size(); i2++) {
             ErrorListData dataTemp = new ErrorListData();
             HttpResponsAsync.ReadCardArgumentErrorHistory cardErrorHistory = readCardArgument.ErrorHistory.get(i2);
             dataTemp.setGroup(cardErrorHistory.ErrorGroup);
@@ -243,10 +247,36 @@ public class ReadCard extends AppCompatActivity {
         }
 
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("tag",tag);
-        CardPropertiesFragment myObj = new CardPropertiesFragment();
-        myObj.setArguments(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable(nfcTag,tag);
+//        CardPropertiesFragment myObj = new CardPropertiesFragment();
+//        myObj.setArguments(bundle);
+//
+//
+//
+//        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedpreferences.edit();
+//        editor.putString("versionNO",readCardArgument.VersionNo);
+//        editor.putString("cardStatus",readCardArgument.CardStatus);
+//        editor.putString("cardID",readCardArgument.CardIdm);
+//        editor.putString("customerID",readCardArgument.CustomerId);
+//        editor.putString("cardGroup",readCardArgument.CardGroup);
+//        editor.putString("credit",readCardArgument.Credit);
+//        editor.putString("unit",readCardArgument.Unit);
+//        editor.putString("basicFee",readCardArgument.BasicFee);
+//        editor.putString("refund1",readCardArgument.Refund1);
+//        editor.putString("refund2",readCardArgument.Refund2);
+//        editor.putString("untreatedFee",readCardArgument.UntreatedFee);
+//        editor.putString("historyNo",readCardArgument.CardHistoryNo);
+//        editor.putString("errorNo",readCardArgument.ErrorNo);
+//        editor.putString("openCount",readCardArgument.OpenCount);
+//        editor.putString("lidTime",readCardArgument.LidTime);
+//        editor.apply();
+//        editor.commit();
+
+
+
+
 
 
 
