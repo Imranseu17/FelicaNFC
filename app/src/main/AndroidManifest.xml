@@ -49,13 +49,7 @@
         <activity android:name=".CardHistoryActivity" />
         <activity android:name=".ErrorHistoryActivity" />
         <activity android:name=".CustomerInfoActivity" />
-        <activity android:name=".PosActivity" />
-        <activity android:name=".GasActivity" />
         <activity android:name=".OperatorSettingsActivity" />
-        <activity android:name=".APISetUPActivity" />
-        <activity android:name=".DeviceActivity" />
-        <activity android:name=".CompanyActivity" />
-        <activity android:name=".OtherActivity" />
         <activity
             android:name=".GridMenuPageActivity"
             android:label="@string/title_activity_menu_page"
@@ -69,7 +63,10 @@
             android:name=".RecycleViewActivity"
             android:label="@string/title_activity_recycle_view"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".GasReachargeActivity"></activity>
+        <activity android:name=".GasReachargeActivity" />
+        <activity android:name=".AddCardActivity" />
+        <activity android:name=".AddGasActivity" />
+        <activity android:name=".RefundActivity"></activity>
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.example.root.officeapp;
 
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
@@ -13,6 +14,7 @@ import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -263,17 +265,31 @@ public class NFCcheckActivity extends AppCompatActivity {
         }
 
             readCard.ReadTag(tag);
-            readCard.SetReadCardData(tag,readCard.webAPI,readCard.readCardArgument);
+            boolean data =  readCard.SetReadCardData(tag,readCard.webAPI,readCard.readCardArgument);
 
+            if(data){
+                if(readCard.readCardArgument.CardGroup.equals("88")){
+                    startActivity(new Intent
+                            (NFCcheckActivity.this, GridMenuPageActivity.class));
+                }
 
-            if(readCard.readCardArgument.CardGroup.equals("88")){
-                startActivity(new Intent
-                        (NFCcheckActivity.this, GridMenuPageActivity.class));
+                else {
+
+                    new AlertDialog.Builder(NFCcheckActivity.this)
+                            .setTitle("Read Card")
+                            .setMessage("It is not Service Card")
+                            .setCancelable(false)
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Whatever...
+                                }
+                            }).show();
+                }
             }
 
-            else {
-                Toast.makeText(this,"This is not Serviece Card",Toast.LENGTH_LONG).show();
-            }
+
+
 
 
 

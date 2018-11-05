@@ -14,15 +14,28 @@
             android:src="@drawable/nfcblack"
             android:layout_centerHorizontal="true"/>
 
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nfcImage"
-            android:text="Please tab the NFC card"
+            android:text="Please tab the User Card"
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="18dp"
             android:id="@+id/nfcText"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+         android:gravity="center"
+        android:textStyle="bold"
+        android:text="Customer Information"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="15dp"
+        android:id="@+id/customerInfo" />
 
 
 
@@ -31,35 +44,69 @@
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
+            android:layout_below="@+id/customerInfo"
+            android:gravity="center"
             android:textStyle="bold"
             android:id="@+id/textdata" />
 
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:id="@+id/cardHistory"
-            android:smoothScrollbar="true"
-            android:scrollingCache="true"
-            android:layout_below="@+id/textdata"/>
+        <!--<ListView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:id="@+id/cardHistory"-->
+            <!--android:smoothScrollbar="true"-->
+            <!--android:scrollingCache="true"-->
+            <!--android:layout_below="@+id/textdata"/>-->
 
-    <TextView
-        android:layout_width="match_parent"
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="15dp"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:layout_below="@id/cardHistory"-->
+        <!--android:id="@+id/texterror" />-->
+
+        <!--<ListView-->
+            <!--android:layout_below="@+id/texterror"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:smoothScrollbar="true"-->
+            <!--android:scrollingCache="true"-->
+            <!--android:id="@+id/cardErrorList" />-->
+
+
+    <Button
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:layout_below="@id/cardHistory"
-        android:id="@+id/texterror" />
+        android:layout_marginTop="420dp"
+        android:layout_marginLeft="30dp"
+        android:text="Add Card"
+        android:id="@+id/addcard"
+        android:textSize="14dp"
+        android:background="@drawable/roundedbutton"/>
 
-        <ListView
-            android:layout_below="@+id/texterror"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:smoothScrollbar="true"
-            android:scrollingCache="true"
-            android:id="@+id/cardErrorList" />
+    <Button
+        android:id="@+id/addgas"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/addcard"
+        android:layout_marginTop="420dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Add Gas"
+        android:textSize="14dp" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/addgas"
+        android:layout_marginTop="420dp"
+        android:layout_marginLeft="10dp"
+        android:text="Refund"
+        android:id="@+id/refund"
+        android:textSize="14dp"
+        android:background="@drawable/roundedbutton"/>
 
 
 

@@ -69,12 +69,18 @@ public class CardPropertiesFragment extends Fragment {
 
 //        Bundle bundle = this.getArguments();
 //         if(bundle != null){
-//             tag = bundle.getParcelable(ReadCard.nfcTag);
+//             tag = bundle.getParcelable("tag");
 //         }
 
+       // tag = this.getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
 
-        tag = getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+
+
+
+
+        // tag = getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
 
 

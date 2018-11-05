@@ -3,6 +3,7 @@ package com.example.root.officeapp;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -12,17 +13,19 @@ import android.nfc.Tag;
 import android.nfc.TagLostException;
 import android.nfc.tech.NfcF;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.internal.view.SupportMenu;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.epson.epos2.keyboard.Keyboard;
 import com.example.root.officeapp.golobal.MainApplication;
@@ -33,7 +36,6 @@ import com.example.root.officeapp.nfcfelica.CngModel;
 import com.example.root.officeapp.nfcfelica.CntModel;
 import com.example.root.officeapp.nfcfelica.Common;
 import com.example.root.officeapp.nfcfelica.ContinueModel;
-import com.example.root.officeapp.nfcfelica.ErrorListAdapter;
 import com.example.root.officeapp.nfcfelica.ErrorListData;
 import com.example.root.officeapp.nfcfelica.FelicaBlock;
 import com.example.root.officeapp.nfcfelica.GMA_CARD_HISTORY;
@@ -60,11 +62,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Random;
-import java.util.Set;
 
 import static com.example.root.officeapp.lang.NumberUtils.TAG;
 
@@ -75,7 +75,7 @@ public class ReadCard extends AppCompatActivity {
     private String[][] techListsArray;
     private NfcAdapter mAdapter;
     private PendingIntent pendingIntent;
-    TextView textdata,errorText;
+    TextView textdata,customerInfo;
     ImageView imageView;
     TextView textView;
     Tag tag;
@@ -94,9 +94,10 @@ public class ReadCard extends AppCompatActivity {
     HttpResponsAsync webAPI = new HttpResponsAsync();
     ArrayList<HistoryListData> historyListData = new ArrayList();
     ArrayList<ErrorListData> errorListData = new ArrayList();
-    ListView cardHistoryListView,cardErrorList;
-    int i2;
-    public  static final String nfcTag = "tag";
+   // ListView cardHistoryListView,cardErrorList;
+
+    Button addCard,addGas,refund;
+
 
 
     @Override
@@ -104,11 +105,20 @@ public class ReadCard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.readcard);
         textdata = findViewById(R.id.textdata);
-        errorText = findViewById(R.id.texterror);
+  //      errorText = findViewById(R.id.texterror);
         imageView = findViewById(R.id.nfcImage);
         textView = findViewById(R.id.nfcText);
-       cardHistoryListView = findViewById(R.id.cardHistory);
-        cardErrorList = findViewById(R.id.cardErrorList);
+//       cardHistoryListView = findViewById(R.id.cardHistory);
+//        cardErrorList = findViewById(R.id.cardErrorList);
+        customerInfo = findViewById(R.id.customerInfo);
+        addCard = findViewById(R.id.addcard);
+        addGas = findViewById(R.id.addgas);
+        refund = findViewById(R.id.refund);
+
+        customerInfo.setVisibility(View.GONE);
+        addCard.setVisibility(View.GONE);
+        addGas.setVisibility(View.GONE);
+        refund.setVisibility(View.GONE);
         setTitle(" Read Card ");
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
         imageView.startAnimation(animation);
@@ -164,9 +174,6 @@ public class ReadCard extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
 
         setIntent(intent);
-        imageView.clearAnimation();
-        imageView.setVisibility(View.GONE);
-        textView.setVisibility(View.GONE);
         tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
         if (tag == null) {
@@ -183,8 +190,67 @@ public class ReadCard extends AppCompatActivity {
 
         boolean data =   SetReadCardData(tag,webAPI,readCardArgument);
 
+        if(data){
+            if(readCardArgument.CardGroup.equals("77")){
+                imageView.clearAnimation();
+                imageView.setVisibility(View.GONE);
+                textView.setVisibility(View.GONE);
+                customerInfo.setVisibility(View.VISIBLE);
+                addCard.setVisibility(View.VISIBLE);
+                addGas.setVisibility(View.VISIBLE);
+                refund.setVisibility(View.VISIBLE);
 
-        for ( i2 = 0; i2 < readCardArgument.CardHistory.size(); i2++) {
+
+                textdata.setText("Card IDm:  "+readCardArgument.CardIdm
+                        +"\n"+"Account NO:  "+readCardArgument.CustomerId
+                        +"\n"+"Card Status:  "+readCardArgument.CardStatus
+                        +"\n"+"Card History NO:  "+readCardArgument.CardHistoryNo);
+
+
+                addCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(ReadCard.this,AddCardActivity.class));
+                    }
+                });
+
+                addGas.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(ReadCard.this,AddGasActivity.class));
+                    }
+                });
+
+                refund.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(ReadCard.this,RefundActivity.class));
+                    }
+                });
+            }
+
+            else {
+                new AlertDialog.Builder(ReadCard.this)
+                        .setTitle("Read Card")
+                        .setMessage("It is not User Card")
+                        .setCancelable(false)
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Whatever...
+                            }
+                        }).show();
+            }
+
+        }
+
+
+
+
+
+
+
+        for (int i2 = 0; i2 < readCardArgument.CardHistory.size(); i2++) {
             HistoryListData dataTemp = new HistoryListData();
             HttpResponsAsync.ReadCardArgumentCardHistory cardHistory = readCardArgument.CardHistory.get(i2);
             dataTemp.setTime(getFormatDate(cardHistory.HistoryTime));
@@ -192,7 +258,7 @@ public class ReadCard extends AppCompatActivity {
             historyListData.add(dataTemp);
         }
 
-        for ( i2 = 0; i2 < readCardArgument.ErrorHistory.size(); i2++) {
+        for ( int i2 = 0; i2 < readCardArgument.ErrorHistory.size(); i2++) {
             ErrorListData dataTemp = new ErrorListData();
             HttpResponsAsync.ReadCardArgumentErrorHistory cardErrorHistory = readCardArgument.ErrorHistory.get(i2);
             dataTemp.setGroup(cardErrorHistory.ErrorGroup);
@@ -204,75 +270,80 @@ public class ReadCard extends AppCompatActivity {
 
 
 
-
-        HistoryListAdapter historyListAdapter = new HistoryListAdapter(this,
-                historyListData);
-
-        cardHistoryListView.setAdapter(historyListAdapter);
-
-        errorText.setText("*************  Error List  *************");
-
-        CardErrorListAdapter cardErrorListAdapter = new CardErrorListAdapter(
-                this,errorListData
-        );
-
-        cardErrorList.setAdapter(cardErrorListAdapter);
-
-
+//
+//        HistoryListAdapter historyListAdapter = new HistoryListAdapter(this,
+//                historyListData);
+//
+//        cardHistoryListView.setAdapter(historyListAdapter);
+//
+//        errorText.setText("*************  Error List  *************");
+//
+//        CardErrorListAdapter cardErrorListAdapter = new CardErrorListAdapter(
+//                this,errorListData
+//        );
+//
+//        cardErrorList.setAdapter(cardErrorListAdapter);
 
 
 
 
 
 
-        if(data){
 
-            textdata.setText("*************  Card Properties  *************"+"\n"+
-                    "Version NO:"+readCardArgument.VersionNo+"\n"+
-                    "Card Status: "+  readCardArgument.CardStatus +"\n"
-                    +"Card ID: "+ readCardArgument.CardIdm
-                    +"\n"+"Customer ID: "+readCardArgument.CustomerId
-                    +"\n"+"Card Group: "+ readCardArgument.CardGroup
-                    +"\n"+"Credit: "+readCardArgument.Credit
-                    +"\n"+"Unit: "+readCardArgument.Unit
-                    +"\n"+"Basic Fee: "+readCardArgument.BasicFee
-                    +"\n"+"Refund1: "+readCardArgument.Refund1
-                    +"\n"+"Refund2: "+readCardArgument.Refund2
-                    +"\n"+"Untreated Fee: "+readCardArgument.UntreatedFee
-                    +"\n"+"Card History NO: "+readCardArgument.CardHistoryNo
-                    +"\n"+"Card Error NO: "+readCardArgument.ErrorNo
-                    +"\n"+"Open Count: "+readCardArgument.OpenCount
-                    +"\n"+"Lid Time: "+readCardArgument.LidTime
-                    +"\n"+"*************  Card History List  *************");
-        }
+
+//        if(data){
+//
+//            textdata.setText("*************  Card Properties  *************"+"\n"+
+//                    "Version NO:"+readCardArgument.VersionNo+"\n"+
+//                    "Card Status: "+  readCardArgument.CardStatus +"\n"
+//                    +"Card ID: "+ readCardArgument.CardIdm
+//                    +"\n"+"Customer ID: "+readCardArgument.CustomerId
+//                    +"\n"+"Card Group: "+ readCardArgument.CardGroup
+//                    +"\n"+"Credit: "+readCardArgument.Credit
+//                    +"\n"+"Unit: "+readCardArgument.Unit
+//                    +"\n"+"Basic Fee: "+readCardArgument.BasicFee
+//                    +"\n"+"Refund1: "+readCardArgument.Refund1
+//                    +"\n"+"Refund2: "+readCardArgument.Refund2
+//                    +"\n"+"Untreated Fee: "+readCardArgument.UntreatedFee
+//                    +"\n"+"Card History NO: "+readCardArgument.CardHistoryNo
+//                    +"\n"+"Card Error NO: "+readCardArgument.ErrorNo
+//                    +"\n"+"Open Count: "+readCardArgument.OpenCount
+//                    +"\n"+"Lid Time: "+readCardArgument.LidTime
+//                    +"\n"+"*************  Card History List  *************");
+//        }
 
 
 //        Bundle bundle = new Bundle();
-//        bundle.putParcelable(nfcTag,tag);
+//        bundle.putParcelable("tag",tag);
 //        CardPropertiesFragment myObj = new CardPropertiesFragment();
 //        myObj.setArguments(bundle);
-//
-//
-//
-//        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedpreferences.edit();
-//        editor.putString("versionNO",readCardArgument.VersionNo);
-//        editor.putString("cardStatus",readCardArgument.CardStatus);
-//        editor.putString("cardID",readCardArgument.CardIdm);
-//        editor.putString("customerID",readCardArgument.CustomerId);
-//        editor.putString("cardGroup",readCardArgument.CardGroup);
-//        editor.putString("credit",readCardArgument.Credit);
-//        editor.putString("unit",readCardArgument.Unit);
-//        editor.putString("basicFee",readCardArgument.BasicFee);
-//        editor.putString("refund1",readCardArgument.Refund1);
-//        editor.putString("refund2",readCardArgument.Refund2);
-//        editor.putString("untreatedFee",readCardArgument.UntreatedFee);
-//        editor.putString("historyNo",readCardArgument.CardHistoryNo);
-//        editor.putString("errorNo",readCardArgument.ErrorNo);
-//        editor.putString("openCount",readCardArgument.OpenCount);
-//        editor.putString("lidTime",readCardArgument.LidTime);
-//        editor.apply();
-//        editor.commit();
+
+
+
+
+        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("versionNO",readCardArgument.VersionNo);
+        editor.putString("cardStatus",readCardArgument.CardStatus);
+        editor.putString("cardID",readCardArgument.CardIdm);
+        editor.putString("customerID",readCardArgument.CustomerId);
+        editor.putString("cardGroup",readCardArgument.CardGroup);
+        editor.putString("credit",readCardArgument.Credit);
+        editor.putString("unit",readCardArgument.Unit);
+        editor.putString("basicFee",readCardArgument.BasicFee);
+        editor.putString("refund1",readCardArgument.Refund1);
+        editor.putString("refund2",readCardArgument.Refund2);
+        editor.putString("untreatedFee",readCardArgument.UntreatedFee);
+        editor.putString("historyNo",readCardArgument.CardHistoryNo);
+        editor.putString("errorNo",readCardArgument.ErrorNo);
+        editor.putString("openCount",readCardArgument.OpenCount);
+        editor.putString("lidTime",readCardArgument.LidTime);
+        editor.apply();
+        editor.commit();
+
+
+
+
 
 
 
