@@ -67,27 +67,28 @@ public class CardPropertiesFragment extends Fragment {
 
         mAdapter = NfcAdapter.getDefaultAdapter(getContext().getApplicationContext());
 
-//        Bundle bundle = this.getArguments();
-//         if(bundle != null){
-//             tag = bundle.getParcelable("tag");
-//         }
+        try {
 
-       // tag = this.getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            Bundle bundle = this.getArguments();
+            if(bundle != null){
+                tag = bundle.getParcelable("tag");
+            }
+
+            //tag = getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
 
-
-
-
-
-        // tag = getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
 
 
         readCard.ReadTag(tag);
 
         boolean data =  readCard.SetReadCardData(tag,readCard.webAPI,readCard.readCardArgument);
-//
+
 //        SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
 //
 //        cardPropeties.setText(

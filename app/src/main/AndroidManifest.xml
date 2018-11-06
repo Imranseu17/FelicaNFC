@@ -49,7 +49,6 @@
         <activity android:name=".CardHistoryActivity" />
         <activity android:name=".ErrorHistoryActivity" />
         <activity android:name=".CustomerInfoActivity" />
-        <activity android:name=".OperatorSettingsActivity" />
         <activity
             android:name=".GridMenuPageActivity"
             android:label="@string/title_activity_menu_page"

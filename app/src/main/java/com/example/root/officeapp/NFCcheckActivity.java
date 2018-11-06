@@ -16,9 +16,11 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ public class NFCcheckActivity extends AppCompatActivity {
     ImageView logo;
     Tag tag;
     ReadCard readCard = new ReadCard();
+    ProgressBar progressBar;
 
 
     @Override
@@ -48,6 +51,8 @@ public class NFCcheckActivity extends AppCompatActivity {
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
         logo.startAnimation(animation);
         text = findViewById(R.id.text);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (MainApplication.message == "Japanese") {
@@ -269,6 +274,7 @@ public class NFCcheckActivity extends AppCompatActivity {
 
             if(data){
                 if(readCard.readCardArgument.CardGroup.equals("88")){
+                    progressBar.setVisibility(View.VISIBLE);
                     startActivity(new Intent
                             (NFCcheckActivity.this, GridMenuPageActivity.class));
                 }

@@ -47,8 +47,15 @@ public class ServiceChargeActivity extends AppCompatActivity {
          String slot = sharedpreferences.getString("key","");
          String parcentege = sharedpreferences.getString("parcentege","");
 
-               //chargeSelect.setText(slot+ "  " + "and  "+parcentege + "  is applicable");
-                chargeSelect.setText(slot);
+         if(parcentege.isEmpty()){
+             chargeSelect.setText(slot);
+         }
+
+         else {
+             chargeSelect.setText(currentDate + "  " + parcentege +"%"+ "  charge is applicable ");
+         }
+
+
 
 
         list.add("Select Charge");

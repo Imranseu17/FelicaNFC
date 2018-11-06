@@ -24,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,6 +96,7 @@ public class ReadCard extends AppCompatActivity {
     ArrayList<HistoryListData> historyListData = new ArrayList();
     ArrayList<ErrorListData> errorListData = new ArrayList();
    // ListView cardHistoryListView,cardErrorList;
+   ProgressBar progressBar;
 
     Button addCard,addGas,refund;
 
@@ -114,7 +116,7 @@ public class ReadCard extends AppCompatActivity {
         addCard = findViewById(R.id.addcard);
         addGas = findViewById(R.id.addgas);
         refund = findViewById(R.id.refund);
-
+        progressBar = findViewById(R.id.progressBar);
         customerInfo.setVisibility(View.GONE);
         addCard.setVisibility(View.GONE);
         addGas.setVisibility(View.GONE);
@@ -195,11 +197,11 @@ public class ReadCard extends AppCompatActivity {
                 imageView.clearAnimation();
                 imageView.setVisibility(View.GONE);
                 textView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 customerInfo.setVisibility(View.VISIBLE);
                 addCard.setVisibility(View.VISIBLE);
                 addGas.setVisibility(View.VISIBLE);
                 refund.setVisibility(View.VISIBLE);
-
 
                 textdata.setText("Card IDm:  "+readCardArgument.CardIdm
                         +"\n"+"Account NO:  "+readCardArgument.CustomerId
@@ -313,10 +315,10 @@ public class ReadCard extends AppCompatActivity {
 //        }
 
 
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("tag",tag);
-//        CardPropertiesFragment myObj = new CardPropertiesFragment();
-//        myObj.setArguments(bundle);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("tag",tag);
+        CardPropertiesFragment myObj = new CardPropertiesFragment();
+        myObj.setArguments(bundle);
 
 
 
