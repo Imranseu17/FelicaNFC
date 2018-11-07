@@ -23,10 +23,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.epson.epos2.keyboard.Keyboard;
 import com.example.root.officeapp.golobal.MainApplication;
@@ -96,6 +94,7 @@ public class ReadCard extends AppCompatActivity {
     ArrayList<HistoryListData> historyListData = new ArrayList();
     ArrayList<ErrorListData> errorListData = new ArrayList();
    // ListView cardHistoryListView,cardErrorList;
+     static String choice;
    ProgressBar progressBar;
 
     Button addCard,addGas,refund;
@@ -315,10 +314,18 @@ public class ReadCard extends AppCompatActivity {
 //        }
 
 
+
+
+
+
         Bundle bundle = new Bundle();
         bundle.putParcelable("tag",tag);
+        bundle.putString("test","dataPass");
         CardPropertiesFragment myObj = new CardPropertiesFragment();
         myObj.setArguments(bundle);
+
+
+
 
 
 
@@ -355,6 +362,10 @@ public class ReadCard extends AppCompatActivity {
 
 
     }
+
+
+
+
 
 
     @Override

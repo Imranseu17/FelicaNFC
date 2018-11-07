@@ -81,29 +81,29 @@ public class ErrorHistoryFragment extends Fragment {
 
         mAdapter = NfcAdapter.getDefaultAdapter(getContext().getApplicationContext());
 
-        tag = getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
-
-
-        readCard.ReadTag(tag);
-
-        readCard.SetReadCardData(tag,readCard.webAPI,readCard.readCardArgument);
-
-
-        for (int i2 = 0; i2 < readCard. readCardArgument.ErrorHistory.size(); i2++) {
-            ErrorListData dataTemp = new ErrorListData();
-            HttpResponsAsync.ReadCardArgumentErrorHistory cardErrorHistory = readCard. readCardArgument.ErrorHistory.get(i2);
-            dataTemp.setGroup(cardErrorHistory.ErrorGroup);
-            dataTemp.setTime(readCard. getFormatDate(cardErrorHistory.ErrorTime));
-            dataTemp.setType(cardErrorHistory.ErrorType);
-            readCard. errorListData.add(dataTemp);
-        }
-
-        CardErrorListAdapter cardErrorListAdapter = new CardErrorListAdapter(
-                getContext(),readCard. errorListData
-        );
-
-        cardErrorList.setAdapter(cardErrorListAdapter);
+//        tag = getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+//
+//
+//
+//        readCard.ReadTag(tag);
+//
+//        readCard.SetReadCardData(tag,readCard.webAPI,readCard.readCardArgument);
+//
+//
+//        for (int i2 = 0; i2 < readCard. readCardArgument.ErrorHistory.size(); i2++) {
+//            ErrorListData dataTemp = new ErrorListData();
+//            HttpResponsAsync.ReadCardArgumentErrorHistory cardErrorHistory = readCard. readCardArgument.ErrorHistory.get(i2);
+//            dataTemp.setGroup(cardErrorHistory.ErrorGroup);
+//            dataTemp.setTime(readCard. getFormatDate(cardErrorHistory.ErrorTime));
+//            dataTemp.setType(cardErrorHistory.ErrorType);
+//            readCard. errorListData.add(dataTemp);
+//        }
+//
+//        CardErrorListAdapter cardErrorListAdapter = new CardErrorListAdapter(
+//                getContext(),readCard. errorListData
+//        );
+//
+//        cardErrorList.setAdapter(cardErrorListAdapter);
 
         return  view;
     }

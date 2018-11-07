@@ -62,28 +62,28 @@ public class CardHistrotyFragment extends Fragment {
         mAdapter = NfcAdapter.getDefaultAdapter(getContext().getApplicationContext());
 
 
-        tag = getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
-
-
-        readCard.ReadTag(tag);
-
-        readCard.SetReadCardData(tag,readCard.webAPI,readCard.readCardArgument);
-
-
-
-        for (int i2 = 0; i2 <readCard.readCardArgument.CardHistory.size(); i2++) {
-            HistoryListData dataTemp = new HistoryListData();
-            HttpResponsAsync.ReadCardArgumentCardHistory cardHistory = readCard.readCardArgument.CardHistory.get(i2);
-            dataTemp.setTime(readCard.getFormatDate(cardHistory.HistoryTime));
-            dataTemp.setType(cardHistory.HistoryType);
-            readCard.historyListData.add(dataTemp);
-        }
-
-        HistoryListAdapter historyListAdapter = new HistoryListAdapter(getContext(),
-              readCard.historyListData);
-
-        cardHistoryList.setAdapter(historyListAdapter);
+//        tag = getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+//
+//
+//
+//        readCard.ReadTag(tag);
+//
+//        readCard.SetReadCardData(tag,readCard.webAPI,readCard.readCardArgument);
+//
+//
+//
+//        for (int i2 = 0; i2 <readCard.readCardArgument.CardHistory.size(); i2++) {
+//            HistoryListData dataTemp = new HistoryListData();
+//            HttpResponsAsync.ReadCardArgumentCardHistory cardHistory = readCard.readCardArgument.CardHistory.get(i2);
+//            dataTemp.setTime(readCard.getFormatDate(cardHistory.HistoryTime));
+//            dataTemp.setType(cardHistory.HistoryType);
+//            readCard.historyListData.add(dataTemp);
+//        }
+//
+//        HistoryListAdapter historyListAdapter = new HistoryListAdapter(getContext(),
+//              readCard.historyListData);
+//
+//        cardHistoryList.setAdapter(historyListAdapter);
 
 
         return  v;

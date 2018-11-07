@@ -31,6 +31,8 @@ public class InspectCardActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
