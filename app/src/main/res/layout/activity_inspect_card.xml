@@ -1,32 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fillViewport="true">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     tools:context=".InspectCardActivity">
 
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/sliding_tabs"
+    <!--<android.support.design.widget.TabLayout-->
+        <!--android:id="@+id/sliding_tabs"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:tabMode="scrollable" />-->
+
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/viewpager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@android:color/white" />-->
+
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabMode="scrollable" />
+        android:textSize="15dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Card Properties"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textCardProperties" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+
+
+
+    <ListView
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:id="@+id/cardProperties"
+    android:background="@android:color/holo_blue_light"    />
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Card History List"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textCardHistory" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/cardHistoryList"
+        android:background="@android:color/holo_green_light"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Card Error List"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textCardError" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/cardErrorList"
+        android:background="@android:color/holo_red_light"/>
 
 
 
 </LinearLayout>
 
-</ScrollView>
